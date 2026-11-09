@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>think-static - 应用详情</title>
+<link rel="stylesheet" href="../theme/layui/css/layui.css">
+<link rel="stylesheet" href="../theme/css/index.css">
+</head>
+<body class="store-page">
+<header class="store-header">
+    <div class="layui-container store-header__inner">
+        <a class="store-brand" href="../index.html">Think Store Example</a>
+        <ul class="layui-nav store-nav" lay-filter="store-nav">
+            <li class="layui-nav-item"><a href="../index.html">首页</a></li>
+            <li class="layui-nav-item"><a href="../intro.html">项目介绍</a></li>
+            <li class="layui-nav-item"><a href="../example.html">唐诗示例</a></li>
+            <li class="layui-nav-item layui-this"><a href="index.html">示例详情</a></li>
+        </ul>
+    </div>
+</header>
+<main class="store-main">
+    <div class="layui-container">
+        <section class="store-hero">
+            <p class="store-eyebrow">tool · composer-plugin</p>
+            <h1 class="store-title">think-static</h1>
+            <p class="store-subtitle">ThinkPHP 8 项目部署插件。主项目安装或更新依赖时，自动把 project 目录部署到 public/store。</p>
+        </section>
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md8">
+                <div class="layui-card store-panel">
+                    <div class="layui-card-header">安装</div>
+                    <div class="layui-card-body">
+                        <blockquote class="layui-elem-quote">
+                            <code>composer require youvision/think-static</code>
+                        </blockquote>
+                        <p class="store-note">Composer 2.2 及以上版本需要在主项目 composer.json 中允许插件 youvision/think-static。</p>
+                    </div>
+                </div>
+                <div class="layui-card store-panel">
+                    <div class="layui-card-header">版本信息</div>
+                    <div class="layui-card-body">
+                        <table class="layui-table store-table" lay-skin="line">
+                            <colgroup>
+                                <col width="150">
+                                <col>
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th>字段</th>
+                                    <th>值</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>包名</td>
+                                    <td>youvision/think-static</td>
+                                </tr>
+                                <tr>
+                                    <td>类型</td>
+                                    <td>composer-plugin</td>
+                                </tr>
+                                <tr>
+                                    <td>PHP</td>
+                                    <td>&gt;= 8.0</td>
+                                </tr>
+                                <tr>
+                                    <td>ThinkPHP</td>
+                                    <td>8.x</td>
+                                </tr>
+                                <tr>
+                                    <td>部署目标</td>
+                                    <td>public/store/store-example</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md4">
+                <div class="layui-card store-panel">
+                    <div class="layui-card-header">相关文件</div>
+                    <div class="layui-card-body">
+                        <ul class="store-list">
+                            <li><code>../view/index.html</code>：应用卡片模板片段。</li>
+                            <li><code>../extend/demo.php</code>：应用元数据示例。</li>
+                            <li><code>../theme/css/index.css</code>：项目自定义样式。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p class="store-actions">
+            <a class="layui-btn layui-btn-normal" href="../index.html">返回首页</a>
+            <a class="layui-btn layui-btn-primary" href="../intro.html">查看项目介绍</a>
+        </p>
+    </div>
+</main>
+<footer class="store-footer">
+    <div class="layui-container store-footer__inner">
+        <span>youvision/think-store-example</span>
+        <span>MIT License</span>
+    </div>
+</footer>
+<script src="../theme/layui/layui.js"></script>
+<script>
+layui.use(['element'], function () {});
+</script>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>唐诗示例 - Think Store Example</title>
+<link rel="stylesheet" href="theme/layui/css/layui.css">
+<link rel="stylesheet" href="theme/css/index.css">
+</head>
+<body class="store-page">
+<header class="store-header">
+    <div class="layui-container store-header__inner">
+        <a class="store-brand" href="index.html">Think Store Example</a>
+        <ul class="layui-nav store-nav" lay-filter="store-nav">
+            <li class="layui-nav-item"><a href="index.html">首页</a></li>
+            <li class="layui-nav-item"><a href="intro.html">项目介绍</a></li>
+            <li class="layui-nav-item layui-this"><a href="example.html">唐诗示例</a></li>
+            <li class="layui-nav-item"><a href="example/index.html">示例详情</a></li>
+        </ul>
+    </div>
+</header>
+<main class="store-main" data-api="/poems/random">
+    <div class="layui-container">
+        <section class="store-hero">
+            <p class="store-eyebrow">laytpl · GET /poems/random</p>
+            <h1 class="store-title">随机唐诗示例</h1>
+            <p class="store-subtitle">页面使用 layui 的 laytpl 模板引擎渲染接口返回的 JSON，每次点击都会重新抽取一首。</p>
+            <p class="store-actions">
+                <button class="layui-btn layui-btn-normal" id="poem-refresh" type="button">换一首</button>
+                <a class="layui-btn layui-btn-primary" href="intro.html">查看接口说明</a>
+            </p>
+        </section>
+        <div class="poem-panel" id="poem-result">
+            <div class="poem-loading">正在加载唐诗...</div>
+        </div>
+    </div>
+</main>
+<footer class="store-footer">
+    <div class="layui-container store-footer__inner">
+        <span>youvision/think-store-example</span>
+        <span>MIT License</span>
+    </div>
+</footer>
+<script type="text/html" id="poem-tpl">
+<article class="poem-card">
+    <header class="poem-card__header">
+        <h2 class="poem-title">{{ d.title }}</h2>
+        <p class="poem-meta">{{ d.author }} · {{ d.type }}</p>
+    </header>
+    <div class="poem-content">{{ d.contents }}</div>
+    <footer class="poem-card__footer">第 {{ d.id }} 首 · 来自 data/300.json</footer>
+</article>
+</script>
+<script src="theme/layui/layui.js"></script>
+<script>
+layui.use(['laytpl', 'layer'], function () {
+    var laytpl = layui.laytpl;
+    var layer = layui.layer;
+    var main = document.querySelector('.store-main');
+    var api = main ? (main.getAttribute('data-api') || '/poems/random') : '/poems/random';
+    var result = document.getElementById('poem-result');
+    var button = document.getElementById('poem-refresh');
+    var template = document.getElementById('poem-tpl').innerHTML;
+    var loading = false;
+
+    var setState = function (className, message) {
+        result.innerHTML = '<div class="' + className + '">' + message + '</div>';
+    };
+
+    var load = function () {
+        if (loading) {
+            return;
+        }
+
+        loading = true;
+        button.disabled = true;
+        setState('poem-loading', '正在加载唐诗...');
+
+        fetch(api, { headers: { Accept: 'application/json' } })
+            .then(function (response) {
+                if (!response.ok) {
+                    throw new Error('HTTP ' + response.status);
+                }
+
+                return response.json();
+            })
+            .then(function (data) {
+                laytpl(template).render(data, function (html) {
+                    result.innerHTML = html;
+                });
+            })
+            .catch(function (error) {
+                setState('poem-error', '接口请求失败：' + error.message);
+                layer.msg('请确认接口 ' + api + ' 可访问');
+            })
+            .finally(function () {
+                loading = false;
+                button.disabled = false;
+            });
+    };
+
+    button.addEventListener('click', load);
+    load();
+});
+</script>
+</body>
+</html>

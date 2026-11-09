@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>项目介绍 - Think Store Example</title>
+<link rel="stylesheet" href="theme/layui/css/layui.css">
+<link rel="stylesheet" href="theme/css/index.css">
+</head>
+<body class="store-page">
+<header class="store-header">
+    <div class="layui-container store-header__inner">
+        <a class="store-brand" href="index.html">Think Store Example</a>
+        <ul class="layui-nav store-nav" lay-filter="store-nav">
+            <li class="layui-nav-item"><a href="index.html">首页</a></li>
+            <li class="layui-nav-item layui-this"><a href="intro.html">项目介绍</a></li>
+            <li class="layui-nav-item"><a href="example.html">唐诗示例</a></li>
+            <li class="layui-nav-item"><a href="example/index.html">示例详情</a></li>
+        </ul>
+    </div>
+</header>
+<main class="store-main">
+    <div class="layui-container">
+        <section class="store-hero">
+            <p class="store-eyebrow">实例说明</p>
+            <h1 class="store-title">这个包如何被部署</h1>
+            <p class="store-subtitle">think-store-example 只提供静态资源。Composer 安装依赖后，think-static 读取 project/project.json，把整个 project 目录复制到 public/store/store-example。</p>
+        </section>
+        <div class="layui-tab layui-tab-brief store-tabs" lay-filter="intro-tabs">
+            <ul class="layui-tab-title">
+                <li class="layui-this">目录职责</li>
+                <li>部署流程</li>
+                <li>资源约定</li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+                    <ul class="store-list">
+                        <li><code>theme/layui/</code>：layui 框架目录，保持原样，不做任何修改。</li>
+                        <li><code>theme/css/index.css</code>：项目自定义样式，页面所有新增样式都写在这里。</li>
+                        <li><code>view/index.html</code>：视图模板片段，使用 layui 卡片结构。</li>
+                        <li><code>extend/demo.php</code>：应用元数据示例，供扩展逻辑参考。</li>
+                        <li><code>example/index.html</code>：应用详情页示例。</li>
+                        <li><code>index.html</code>、<code>intro.html</code>、<code>readme.md</code>：站点入口与说明文件。</li>
+                    </ul>
+                </div>
+                <div class="layui-tab-item">
+                    <ol class="store-list store-list--ordered">
+                        <li>Composer 安装或更新依赖，触发 think-static 的 <code>post-autoload-dump</code> 事件。</li>
+                        <li>读取 <code>project/project.json</code> 中的 <code>path</code>、<code>map</code>、<code>exclude</code>。</li>
+                        <li>按映射把顶层条目复制到 <code>public/store/store-example</code>。</li>
+                        <li>跳过隐藏文件与 <code>*.map</code>，不部署 <code>project.json</code> 自身。</li>
+                    </ol>
+                </div>
+                <div class="layui-tab-item">
+                    <ul class="store-list">
+                        <li>页面统一先引入 <code>theme/layui/css/layui.css</code>，再引入 <code>theme/css/index.css</code>。</li>
+                        <li>页面脚本统一引入 <code>theme/layui/layui.js</code>，组件通过 <code>layui.use()</code> 初始化。</li>
+                        <li>不在 <code>theme/layui/</code> 内新增或修改文件，避免覆盖框架源码。</li>
+                        <li>新增样式只写入 <code>theme/css/index.css</code>，保持主题覆盖集中可维护。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <p class="store-actions">
+            <a class="layui-btn layui-btn-normal" href="index.html">返回首页</a>
+            <a class="layui-btn layui-btn-primary" href="example/index.html">查看示例详情</a>
+        </p>
+    </div>
+</main>
+<footer class="store-footer">
+    <div class="layui-container store-footer__inner">
+        <span>youvision/think-store-example</span>
+        <span>MIT License</span>
+    </div>
+</footer>
+<script src="theme/layui/layui.js"></script>
+<script>
+layui.use(['element'], function () {});
+</script>
+</body>
+</html>

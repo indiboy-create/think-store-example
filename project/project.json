@@ -1,0 +1,14 @@
+{
+  "path": "store-example",
+  "map": {
+    "theme": "theme",
+    "view": "view",
+    "extend": "extend",
+    "example": "example",
+    "index.html": "index.html",
+    "intro.html": "intro.html",
+    "example.html": "example.html",
+    "readme.md": "readme.md"
+  },
+  "exclude": ["**/*.map"]
+}
