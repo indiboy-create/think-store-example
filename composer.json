@@ -2,6 +2,7 @@
     "name": "youvision/think-store-example",
     "description": "ThinkPHP 8 静态站点实例包，内置唐诗随机抽取路由接口，并通过 youvision/think-static 部署静态资源。",
     "type": "library",
+    "version": "1.0.0",
     "license": "MIT",
     "keywords": [
         "thinkphp",
