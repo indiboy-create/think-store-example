@@ -1,3 +1,8 @@
+## ThinkPHP-PanGu - 盘古ThinkPHP开源索引!
+面向 ThinkPHP 的开源工程索引：组件、框架、服务与发布工具，按能力组织，持续整理。
+仓库地址：**<https://github.com/indiboy-create/ThinkPHP-PanGu/>**
+在线站点：**<https://indiboy-create.github.io/ThinkPHP-PanGu/>**
+
 # youvision/think-store-example
 
 ThinkPHP 8 实例包：提供基于 layui 的静态站点，通过 [`youvision/think-static`](https://github.com/indiboy-create/think-static) 部署到主项目的 `public/store/store-example`；同时内置唐诗三百首随机抽取路由接口。
