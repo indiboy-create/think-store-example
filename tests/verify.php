@@ -157,7 +157,7 @@ $example = new \Youvision\ThinkStoreExample\StoreExample(['route' => ['prefix' =
 $check($example->base() === '/store/think-store-example', '默认 base 应为 /store/think-store-example');
 $check($example->assets() === '/store/think-store-example/assets', '默认 assets 应为 /store/think-store-example/assets');
 $check($example->api() === '/store/think-store-example/poems/random', '默认接口应为 /store/think-store-example/poems/random');
-$check($example->version() === '1.0.0', '版本应读取为 1.0.0');
+$check($example->version() !== '', '版本应可读取');
 $check(count($example->routes()) === 6, '路由清单应包含 6 条记录');
 $check(count($example->meta()) === 7, '包元数据应包含 7 条记录');
 

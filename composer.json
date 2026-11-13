@@ -2,7 +2,7 @@
     "name": "youvision/think-store-example",
     "description": "ThinkPHP 8 示例包：包内视图渲染、layui 静态资源路由与随机抽诗接口。",
     "type": "library",
-    "version": "1.0.0",
+
     "license": "MIT",
     "keywords": [
         "thinkphp",
