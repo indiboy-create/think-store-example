@@ -3,22 +3,21 @@
 return [
     /*
     |--------------------------------------------------------------------------
-    | 自动注册路由
+    | 内置路由
     |--------------------------------------------------------------------------
-    | 控制内置随机诗接口是否随服务自动注册。最终地址为
-    | /{prefix}/{rule}，默认 /poems/random。
+    | 控制示例页面、随机抽诗接口与包内静态资源是否随服务自动注册。
+    | 默认地址为 /store/think-store-example、/store/think-store-example/intro、
+    | /store/think-store-example/poems、/store/think-store-example/detail、
+    | /store/think-store-example/poems/random 与 /store/think-store-example/assets/<path>。
     */
     'route' => [
         // 是否启用内置路由；关闭后可在应用路由文件中自行定义
         'enabled' => true,
 
-        // 路由前缀，留空表示不添加前缀，例如 poems、api/poems
-        'prefix' => 'poems',
+        // 路由前缀，留空表示不添加前缀，例如 store、api/store
+        'prefix' => 'store',
 
-        // 随机抽取接口的路由规则，默认 random
-        'rule' => 'random',
-
-        // 应用到路由上的中间件，例如 [\app\middleware\Auth::class]
+        // 应用到整组路由的中间件，例如 [\app\middleware\Auth::class]
         'middleware' => [],
     ],
 

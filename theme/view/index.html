@@ -1,0 +1,78 @@
+{include file="layout/head" /}
+{include file="layout/header" /}
+    <div class="layui-container">
+        <section class="store-hero">
+            <p class="store-eyebrow">youvision/think-store-example</p>
+            <h1 class="store-title">Think Store Example：包内视图与随机诗接口示例</h1>
+            <p class="store-subtitle">面向 ThinkPHP 8 的示例发布包：页面由包内 think-view 渲染，layui 资源由 assets 路由输出，无需发布到 public；同时提供基于路由的随机抽诗接口。</p>
+            <p class="store-actions">
+                <a class="layui-btn layui-btn-normal" href="{$base}/intro">查看项目介绍</a>
+                <a class="layui-btn layui-btn-primary" href="{$base}/poems">打开唐诗示例</a>
+            </p>
+        </section>
+
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md6">
+                <div class="layui-card store-card">
+                    <div class="layui-card-header">
+                        <span class="layui-badge layui-bg-blue">view</span>
+                        <span class="store-card__title">包内视图渲染</span>
+                    </div>
+                    <div class="layui-card-body">
+                        <p class="store-card__desc">theme/view 下的模板由包内 View 渲染器通过 think-view 直接输出，主项目不需要复制视图文件。</p>
+                        <p class="store-card__meta">topthink/think-view · 缓存前缀 store_example_</p>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md6">
+                <div class="layui-card store-card">
+                    <div class="layui-card-header">
+                        <span class="layui-badge layui-bg-green">assets</span>
+                        <span class="store-card__title">包内静态资源</span>
+                    </div>
+                    <div class="layui-card-body">
+                        <p class="store-card__desc">layui 与自定义样式由 assets 路由直接读取 theme/assets 输出，路径经过 realpath 校验并拒绝目录穿越。</p>
+                        <p class="store-card__meta">{$assets}/&lt;path&gt; · 缓存 1 天</p>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md6">
+                <div class="layui-card store-card">
+                    <div class="layui-card-header">
+                        <span class="layui-badge layui-bg-blue">api</span>
+                        <span class="store-card__title">随机抽诗接口</span>
+                    </div>
+                    <div class="layui-card-body">
+                        <p class="store-card__desc">从 data/300.json 的 {$poemCount} 首唐诗中随机抽取一首，通过随机抽诗路由返回 JSON 数据。</p>
+                        <p class="store-card__meta">GET {$api}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md6">
+                <div class="layui-card store-card">
+                    <div class="layui-card-header">
+                        <span class="layui-badge layui-bg-green">layui</span>
+                        <span class="store-card__title">layui 页面</span>
+                    </div>
+                    <div class="layui-card-body">
+                        <p class="store-card__desc">页面沿用 layui 组件与现有配色，自定义样式集中在 theme/assets/css/index.css，并适配移动端。</p>
+                        <p class="store-card__meta">layui 2.13.9 · 响应式布局</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <section class="store-section">
+            <div class="store-section__head">
+                <span class="store-eyebrow">Quick start</span>
+                <h2 class="store-section__title">三步查看示例</h2>
+                <p class="store-section__desc">安装为依赖后，路由、视图与静态资源全部由包内提供，不需要修改主项目目录。</p>
+            </div>
+            <ol class="store-steps">
+                <li><span class="store-step__index">01</span><span>安装包：<code>composer require youvision/think-store-example</code></span></li>
+                <li><span class="store-step__index">02</span><span>访问首页：<code>{$base}</code></span></li>
+                <li><span class="store-step__index">03</span><span>打开唐诗示例：<code>{$base}/poems</code>，接口为 <code>{$api}</code></span></li>
+            </ol>
+        </section>
+    </div>
+{include file="layout/footer" /}

@@ -1,0 +1,20 @@
+{include file="layout/head" /}
+{include file="layout/header" /}
+    <div class="layui-container">
+        <section class="store-hero">
+            <p class="store-eyebrow">laytpl · GET {$api}</p>
+            <h1 class="store-title">随机唐诗示例</h1>
+            <p class="store-subtitle">页面使用 layui 的 laytpl 模板引擎渲染接口返回的 JSON，每次点击都会重新抽取一首。诗库共 {$poemCount} 首。</p>
+            <p class="store-actions">
+                <button class="layui-btn layui-btn-normal" id="poem-refresh" type="button">换一首</button>
+                <a class="layui-btn layui-btn-primary" href="{$base}/intro">查看接口说明</a>
+            </p>
+        </section>
+
+        <div class="poem-panel" id="poem-result">
+            <div class="poem-loading">正在加载唐诗...</div>
+        </div>
+
+        <p class="store-note">接口地址由页面 <code>data-api</code> 提供：<code>{$api}</code>。</p>
+    </div>
+{include file="layout/footer" /}

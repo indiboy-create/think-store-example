@@ -12,17 +12,28 @@ class Service extends ThinkService
     {
         $this->mergeConfig();
 
+        $this->app->bind('store_example', function () {
+            return new StoreExample(
+                (array) $this->app->config->get('store_example', []),
+                dirname(__DIR__)
+            );
+        });
+
+        $this->app->bind(StoreExample::class, 'store_example');
+
         $this->app->bind('store_example.poems', function () {
             return new Poems((array) $this->app->config->get('store_example', []));
         });
 
         $this->app->bind(Poems::class, 'store_example.poems');
+
+        $this->app->instance(View::class, new View($this->app));
     }
 
     public function boot(): void
     {
         if ((bool) $this->app->config->get('store_example.route.enabled', true)) {
-            $this->loadRoutesFrom(dirname(__DIR__) . '/route/poems.php');
+            $this->loadRoutesFrom(dirname(__DIR__) . '/route/store_example.php');
         }
     }
 

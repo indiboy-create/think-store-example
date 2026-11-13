@@ -1,0 +1,14 @@
+<body class="store-page">
+<header class="store-header">
+    <div class="layui-container store-header__inner">
+        <a class="store-brand" href="{$base}">Think Store Example</a>
+        <ul class="layui-nav store-nav" lay-filter="store-nav">
+            <li class="layui-nav-item{if condition="$active == 'index'"} layui-this{/if}"><a href="{$base}">首页</a></li>
+            <li class="layui-nav-item{if condition="$active == 'intro'"} layui-this{/if}"><a href="{$base}/intro">项目介绍</a></li>
+            <li class="layui-nav-item{if condition="$active == 'poems'"} layui-this{/if}"><a href="{$base}/poems">唐诗示例</a></li>
+            <li class="layui-nav-item{if condition="$active == 'detail'"} layui-this{/if}"><a href="{$base}/detail">示例详情</a></li>
+        </ul>
+        <span class="store-version">v{$version}</span>
+    </div>
+</header>
+<main class="store-main" data-base="{$base}" data-api="{$api}" data-assets="{$assets}">

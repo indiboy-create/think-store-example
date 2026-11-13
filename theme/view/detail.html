@@ -1,0 +1,94 @@
+{include file="layout/head" /}
+{include file="layout/header" /}
+    <div class="layui-container">
+        <section class="store-hero">
+            <p class="store-eyebrow">package · youvision/think-store-example</p>
+            <h1 class="store-title">示例详情</h1>
+            <p class="store-subtitle">包元数据、路由清单与配置项集中展示；路由地址会跟随 <code>route.prefix</code> 自动变化。</p>
+            <p class="store-actions">
+                <a class="layui-btn layui-btn-normal" href="{$base}">返回首页</a>
+                <a class="layui-btn layui-btn-primary" href="{$base}/poems">打开唐诗示例</a>
+            </p>
+        </section>
+
+        <div class="layui-row layui-col-space15">
+            <div class="layui-col-md5">
+                <div class="layui-card store-panel">
+                    <div class="layui-card-header">包信息</div>
+                    <div class="layui-card-body">
+                        <table class="layui-table store-table" lay-skin="line">
+                            <colgroup>
+                                <col width="120">
+                                <col>
+                            </colgroup>
+                            <tbody>
+                                {volist name="meta" id="item"}
+                                <tr>
+                                    <td>{$item.label}</td>
+                                    <td>{$item.value}</td>
+                                </tr>
+                                {/volist}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <div class="layui-col-md7">
+                <div class="layui-card store-panel">
+                    <div class="layui-card-header">路由清单</div>
+                    <div class="layui-card-body store-table-wrap">
+                        <table id="route-table" lay-filter="route-table"></table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="layui-card store-panel">
+            <div class="layui-card-header">安装与配置</div>
+            <div class="layui-card-body">
+                <blockquote class="layui-elem-quote">
+                    <code>composer require youvision/think-store-example</code>
+                </blockquote>
+                <table class="layui-table store-table" lay-skin="line">
+                    <colgroup>
+                        <col width="180">
+                        <col width="140">
+                        <col>
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>配置项</th>
+                            <th>默认值</th>
+                            <th>说明</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><code>route.enabled</code></td>
+                            <td><code>true</code></td>
+                            <td>是否注册页面、随机抽诗接口与静态资源路由。</td>
+                        </tr>
+                        <tr>
+                            <td><code>route.prefix</code></td>
+                            <td><code>store</code></td>
+                            <td>路由前缀，留空时页面地址变为 <code>/example</code>。</td>
+                        </tr>
+                        <tr>
+                            <td><code>route.middleware</code></td>
+                            <td><code>[]</code></td>
+                            <td>应用到整组路由的中间件，可填写类名或别名。</td>
+                        </tr>
+                        <tr>
+                            <td><code>data_file</code></td>
+                            <td>空字符串</td>
+                            <td>自定义诗库 JSON 的绝对路径；留空时使用包内 <code>data/300.json</code>。</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p class="store-note">包内默认配置会与主项目配置合并，项目侧优先；修改后清除 <code>runtime</code> 缓存即可生效。</p>
+            </div>
+        </div>
+
+        <script type="application/json" id="store-example-routes">{$routesJson|raw}</script>
+    </div>
+{include file="layout/footer" /}

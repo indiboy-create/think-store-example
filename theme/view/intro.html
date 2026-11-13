@@ -1,0 +1,53 @@
+{include file="layout/head" /}
+{include file="layout/header" /}
+    <div class="layui-container">
+        <section class="store-hero">
+            <p class="store-eyebrow">实例说明</p>
+            <h1 class="store-title">这个包如何被安装与渲染</h1>
+            <p class="store-subtitle">Think Store Example 只作为依赖安装到已有 ThinkPHP 8 项目。服务启动时合并配置并加载路由，页面由包内视图渲染，静态资源通过 assets 路由输出。</p>
+        </section>
+
+        <div class="layui-tab layui-tab-brief store-tabs" lay-filter="intro-tabs">
+            <ul class="layui-tab-title">
+                <li class="layui-this">目录职责</li>
+                <li>路由与资源</li>
+                <li>配置合并</li>
+            </ul>
+            <div class="layui-tab-content">
+                <div class="layui-tab-item layui-show">
+                    <ul class="store-list">
+                        <li><code>theme/view/</code>：包内模板，由 <code>View</code> 渲染器固定从该目录读取。</li>
+                        <li><code>theme/assets/</code>：layui、样式与页面脚本，通过 assets 路由输出。</li>
+                        <li><code>config/store_example.php</code>：路由与诗库配置，可与主项目配置合并。</li>
+                        <li><code>route/store_example.php</code>：页面、随机抽诗接口与静态资源路由。</li>
+                        <li><code>src/</code>：服务注册、视图渲染、资源输出、页面控制与诗库读取。</li>
+                        <li><code>data/300.json</code>：诗库数据，共 {$poemCount} 首。</li>
+                    </ul>
+                </div>
+                <div class="layui-tab-item">
+                    <ol class="store-list store-list--ordered">
+                        <li><code>Service::boot()</code> 在 <code>route.enabled</code> 为真时加载 <code>route/store_example.php</code>。</li>
+                        <li>页面路由指向 <code>StoreExampleController</code>，由 <code>View</code> 渲染 <code>theme/view</code> 下的模板。</li>
+                        <li>模板中的资源地址由 <code>StoreExample</code> 根据 <code>route.prefix</code> 推导，避免硬编码。</li>
+                        <li>assets 路由读取 <code>theme/assets</code>，经 <code>realpath</code> 校验后输出并附加 1 天缓存。</li>
+                        <li>接口路由指向 <code>PoemController</code>，从诗库随机返回一首诗。</li>
+                    </ol>
+                </div>
+                <div class="layui-tab-item">
+                    <ul class="store-list">
+                        <li>包内默认配置与主项目 <code>config/store_example.php</code> 使用 <code>array_replace_recursive</code> 合并，项目侧优先。</li>
+                        <li><code>route.prefix</code> 默认 <code>store</code>，留空时页面地址变为 <code>/think-store-example</code>。</li>
+                        <li><code>route.middleware</code> 应用到整组路由，可填写类名或别名。</li>
+                        <li><code>data_file</code> 可指向自定义诗库 JSON；留空时使用包内 <code>data/300.json</code>。</li>
+                        <li>修改配置后清除 <code>runtime</code> 缓存即可生效。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <p class="store-actions">
+            <a class="layui-btn layui-btn-normal" href="{$base}">返回首页</a>
+            <a class="layui-btn layui-btn-primary" href="{$base}/detail">查看示例详情</a>
+        </p>
+    </div>
+{include file="layout/footer" /}
