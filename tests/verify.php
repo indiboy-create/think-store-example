@@ -126,7 +126,7 @@ $check(str_contains($serviceSource, 'View::class'), '服务应注册 View 渲染
 $viewSource = (string) file_get_contents($packageRoot . '/src/View.php');
 $check(str_contains($viewSource, 'theme/view'), 'View 渲染器应支持包内 theme/view');
 $check(str_contains($viewSource, 'store_example.view'), 'View 渲染器应读取 view 配置');
-$check(str_contains($viewSource, 'think-store-example'), 'View 渲染器应在 view 非空时定位主项目 think-store-example 目录');
+$check(str_contains($viewSource, 'rtrim($root . $view'), 'View 渲染器应将 view 配置按项目根目录解析为模板目录');
 $check(str_contains($viewSource, 'getRootPath'), 'View 渲染器应将相对 view 路径解析到项目根目录');
 $check(str_contains($viewSource, 'store_example_'), 'View 渲染器应使用 store_example_ 缓存前缀');
 $check(str_contains($viewSource, 'ob_start'), 'View 渲染器应捕获 think-view 输出');

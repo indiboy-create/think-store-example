@@ -10,8 +10,8 @@ use think\view\driver\Think;
 /**
  * 视图渲染器。
  *
- * view 配置为空时使用包内 theme/view；不为空时取主项目 view 目录下的
- * think-store-example 目录，便于在主项目中覆盖模板。
+ * view 配置为空时使用包内 theme/view；不为空时直接作为模板目录，
+ * 相对路径从项目根目录算起，例如 view/think-store-example。
  * think-view 的 fetch() 直接输出内容，因此用输出缓冲捕获并返回字符串。
  */
 class View
@@ -53,8 +53,8 @@ class View
      * 解析模板目录。
      *
      * view 留空：包内 theme/view。
-     * view 非空：相对路径按项目根目录解析（主项目 view 与 app 同级），
-     * 模板目录固定为其中的 think-store-example 子目录。
+     * view 非空：该值即模板目录，相对路径从项目根目录算起（主项目
+     * view 与 app 同级），例如 view/think-store-example。
      */
     protected function resolvePath(): string
     {
@@ -67,7 +67,7 @@ class View
         $absolute = str_starts_with($view, '/') || preg_match('/^[A-Za-z]:[\/\\\\]/', $view) === 1;
         $root     = $absolute ? '' : $this->app->getRootPath();
 
-        return rtrim($root . $view, '/\\') . '/think-store-example/';
+        return rtrim($root . $view, '/\\') . '/';
     }
 
     /**
