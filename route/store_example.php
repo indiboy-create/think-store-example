@@ -31,7 +31,8 @@ $register = static function () use ($segment): void {
     Route::get($base . 'poems', [StoreExampleController::class, 'poems'])->name('store_example.poems')->completeMatch();
     Route::get($base . 'detail', [StoreExampleController::class, 'detail'])->name('store_example.detail')->completeMatch();
 
-    Route::get($base . 'poems/random', [PoemController::class, 'random'])
+    // JSON 接口统一挂在 api 段下，与页面路由区分
+    Route::get($base . 'api/poems/random', [PoemController::class, 'random'])
         ->name('store_example.poem')
         ->completeMatch();
 

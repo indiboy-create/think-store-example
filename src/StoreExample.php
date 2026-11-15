@@ -64,11 +64,13 @@ class StoreExample
     }
 
     /**
-     * 随机抽诗接口地址，例如 /store/think-store-example/poems/random。
+     * 随机抽诗接口地址，例如 /store/think-store-example/api/poems/random。
+     *
+     * JSON 接口统一使用 api 段，与示例页面路由区分。
      */
     public function api(): string
     {
-        return $this->base() . '/poems/random';
+        return $this->base() . '/api/poems/random';
     }
 
     /**

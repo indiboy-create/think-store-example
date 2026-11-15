@@ -6,8 +6,9 @@ return [
     |--------------------------------------------------------------------------
     | 内置路由
     |--------------------------------------------------------------------------
-    | 最终地址为 /{prefix}/{segment}/index、/{prefix}/{segment}/poems/random，
+    | 最终地址为 /{prefix}/{segment}/index、/{prefix}/{segment}/api/poems/random，
     | 静态资源为 /{prefix}/{segment}/assets/*。
+    | JSON 接口统一挂在 api 段下，与页面路由区分。
     */
     'route' => [
         // 是否启用内置路由；关闭后可在应用路由文件中自行定义

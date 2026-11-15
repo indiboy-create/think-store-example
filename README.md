@@ -41,7 +41,7 @@ php think vendor:publish
 | GET | `/store/think-store-example/intro` | 渲染项目介绍页 |
 | GET | `/store/think-store-example/poems` | 渲染唐诗示例页 |
 | GET | `/store/think-store-example/detail` | 渲染示例详情页 |
-| GET | `/store/think-store-example/poems/random` | 随机返回一首唐诗 |
+| GET | `/store/think-store-example/api/poems/random` | 随机返回一首唐诗 |
 | GET | `/store/think-store-example/assets/<path>` | 直接输出包内 `theme/assets`，含 layui 与样式 |
 
 路由前缀由 `config/store_example.php` 的 `route.prefix` 控制，默认 `store`；包内命名空间由 `route.segment` 控制，默认 `think-store-example`。`route.prefix` 设为空字符串时首页变为 `/think-store-example/index`；`route.segment` 设为空字符串时页面直接挂在路由前缀下，例如 `/store/index`。
@@ -63,8 +63,10 @@ php think vendor:publish
 ## 随机抽诗接口
 
 ```http
-GET /store/think-store-example/poems/random
+GET /store/think-store-example/api/poems/random
 ```
+
+JSON 接口统一挂在 `api` 段下，与示例页面路由区分。
 
 返回 JSON 对象：
 

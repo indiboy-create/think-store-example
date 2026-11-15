@@ -103,7 +103,7 @@ foreach ([
     "\$base . 'intro'",
     "\$base . 'poems'",
     "\$base . 'detail'",
-    "\$base . 'poems/random'",
+    "\$base . 'api/poems/random'",
     "\$base . 'assets/<path>'",
     'AssetController::class',
     'StoreExampleController::class',
@@ -162,7 +162,7 @@ $example = new \Youvision\ThinkStoreExample\StoreExample(['route' => ['prefix' =
 $check($example->base() === '/store/think-store-example', '默认 base 应为 /store/think-store-example');
 $check($example->home() === '/store/think-store-example/index', '默认首页应为 /store/think-store-example/index');
 $check($example->assets() === '/store/think-store-example/assets', '默认 assets 应为 /store/think-store-example/assets');
-$check($example->api() === '/store/think-store-example/poems/random', '默认接口应为 /store/think-store-example/poems/random');
+$check($example->api() === '/store/think-store-example/api/poems/random', '默认接口应为 /store/think-store-example/api/poems/random');
 $check($example->version() !== '', '版本应可读取');
 $check(count($example->routes()) === 6, '路由清单应包含 6 条记录');
 $check(count($example->meta()) === 7, '包元数据应包含 7 条记录');
@@ -241,7 +241,7 @@ $check(
 $readme = (string) file_get_contents($packageRoot . '/README.md');
 $check(str_contains($readme, 'youvision/think-store-example'), 'README 应包含包名');
 $check(str_contains($readme, 'extra.store.home'), 'README 应说明 extra.store.home');
-$check(str_contains($readme, '/store/think-store-example/poems/random'), 'README 应包含随机抽诗接口地址');
+$check(str_contains($readme, '/store/think-store-example/api/poems/random'), 'README 应包含随机抽诗接口地址');
 $check(!str_contains($readme, 'think-static'), 'README 不应继续描述 think-static 部署');
 
 function checkTemplateLinks(string $source, callable $check): void
