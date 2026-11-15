@@ -4,9 +4,9 @@
         <section class="store-hero">
             <p class="store-eyebrow">package · youvision/think-store-example</p>
             <h1 class="store-title">示例详情</h1>
-            <p class="store-subtitle">包元数据、路由清单与配置项集中展示；路由地址会跟随 <code>route.prefix</code> 自动变化。</p>
+            <p class="store-subtitle">包元数据、路由清单与配置项集中展示；路由地址会跟随 <code>route.prefix</code>、<code>route.segment</code> 与 <code>assets</code> 自动变化。</p>
             <p class="store-actions">
-                <a class="layui-btn layui-btn-normal" href="{$base}">返回首页</a>
+                <a class="layui-btn layui-btn-normal" href="{$home}">返回首页</a>
                 <a class="layui-btn layui-btn-primary" href="{$base}/poems">打开唐诗示例</a>
             </p>
         </section>
@@ -71,12 +71,22 @@
                         <tr>
                             <td><code>route.prefix</code></td>
                             <td><code>store</code></td>
-                            <td>路由前缀，留空时页面地址变为 <code>/example</code>。</td>
+                            <td>路由前缀，留空时页面地址变为 <code>/think-store-example/index</code>。</td>
+                        </tr>
+                        <tr>
+                            <td><code>route.segment</code></td>
+                            <td><code>think-store-example</code></td>
+                            <td>包内命名空间，留空时页面直接挂在路由前缀下。</td>
                         </tr>
                         <tr>
                             <td><code>route.middleware</code></td>
                             <td><code>[]</code></td>
                             <td>应用到整组路由的中间件，可填写类名或别名。</td>
+                        </tr>
+                        <tr>
+                            <td><code>assets</code></td>
+                            <td><code>assets</code></td>
+                            <td>静态资源地址，相对路径拼在命名空间后，以 <code>/</code> 开头时视为绝对地址。</td>
                         </tr>
                         <tr>
                             <td><code>data_file</code></td>

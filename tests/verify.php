@@ -42,8 +42,8 @@ $check(
     'composer.json 应声明 store_example 配置'
 );
 $check(
-    ($composer['extra']['store']['home'] ?? '') === '/store/think-store-example',
-    'composer.json 应通过 extra.store.home 声明首页 /store/think-store-example'
+    ($composer['extra']['store']['home'] ?? '') === '/store/think-store-example/index',
+    'composer.json 应通过 extra.store.home 声明首页 /store/think-store-example/index'
 );
 $check(!is_dir($packageRoot . '/project'), 'project 静态目录应已移除，资源改为包内 assets 路由');
 
@@ -88,19 +88,23 @@ $config = require $packageRoot . '/config/store_example.php';
 
 $check(($config['route']['enabled'] ?? null) === true, '默认应启用内置路由');
 $check(($config['route']['prefix'] ?? '') === 'store', '默认路由前缀应为 store');
+$check(($config['route']['segment'] ?? '') === 'think-store-example', '默认包内命名空间应为 think-store-example');
 $check(($config['route']['middleware'] ?? null) === [], '默认路由中间件应为空数组');
+$check(($config['assets'] ?? '') === 'assets', '默认静态资源路径应为 assets');
 $check(($config['data_file'] ?? null) === '', '默认应使用包内诗库文件');
 $check(!isset($config['route']['rule']), '路由规则固定，不应保留 route.rule 配置');
 
 $routeSource = (string) file_get_contents($packageRoot . '/route/store_example.php');
 
 foreach ([
-    "Route::get('think-store-example'",
-    "Route::get('think-store-example/intro'",
-    "Route::get('think-store-example/poems'",
-    "Route::get('think-store-example/detail'",
-    "Route::get('think-store-example/poems/random'",
-    "Route::get('think-store-example/assets/<path>'",
+    "\$segment    = trim((string) config('store_example.route.segment', 'think-store-example'), '/')",
+    "\$base = \$segment === '' ? '' : \$segment . '/'",
+    "\$base . 'index'",
+    "\$base . 'intro'",
+    "\$base . 'poems'",
+    "\$base . 'detail'",
+    "\$base . 'poems/random'",
+    "\$base . 'assets/<path>'",
     'AssetController::class',
     'StoreExampleController::class',
     'PoemController::class',
@@ -140,6 +144,7 @@ $check(str_contains($footerSource, 'detail.js'), '页脚应在详情页加载 de
 
 $indexSource = (string) file_get_contents($packageRoot . '/theme/view/index.html');
 $check(str_contains($indexSource, 'Think Store Example'), '首页应包含 Think Store Example 全称');
+$check(str_contains($indexSource, '{$home}'), '首页应使用推导后的首页地址');
 $check(str_contains($indexSource, '{$base}/poems'), '首页应链到唐诗示例页');
 $check(str_contains($indexSource, '{$api}'), '首页应使用推导后的接口地址');
 $check(!str_contains($indexSource, 'store-search') && !str_contains($indexSource, '应用市场'), '首页不应包含搜索或应用市场内容');
@@ -155,6 +160,7 @@ $check(str_contains($poemsSource, 'poem-result'), '唐诗页应包含结果容�
 $example = new \Youvision\ThinkStoreExample\StoreExample(['route' => ['prefix' => 'store']], $packageRoot);
 
 $check($example->base() === '/store/think-store-example', '默认 base 应为 /store/think-store-example');
+$check($example->home() === '/store/think-store-example/index', '默认首页应为 /store/think-store-example/index');
 $check($example->assets() === '/store/think-store-example/assets', '默认 assets 应为 /store/think-store-example/assets');
 $check($example->api() === '/store/think-store-example/poems/random', '默认接口应为 /store/think-store-example/poems/random');
 $check($example->version() !== '', '版本应可读取');
@@ -163,9 +169,25 @@ $check(count($example->meta()) === 7, '包元数据应包含 7 条记录');
 
 $noPrefix = new \Youvision\ThinkStoreExample\StoreExample(['route' => ['prefix' => '']], $packageRoot);
 $check($noPrefix->base() === '/think-store-example', '空前缀时 base 应为 /think-store-example');
+$check($noPrefix->home() === '/think-store-example/index', '空前缀时首页应为 /think-store-example/index');
 
 $nestedPrefix = new \Youvision\ThinkStoreExample\StoreExample(['route' => ['prefix' => '/api/store/']], $packageRoot);
 $check($nestedPrefix->base() === '/api/store/think-store-example', '前缀应去除首尾斜杠并保留多级路径');
+
+$customSegment = new \Youvision\ThinkStoreExample\StoreExample([
+    'route'  => ['prefix' => 'store', 'segment' => '/demo/'],
+    'assets' => 'static',
+], $packageRoot);
+$check($customSegment->base() === '/store/demo', '自定义 segment 应参与 base 推导');
+$check($customSegment->home() === '/store/demo/index', '自定义 segment 应参与首页推导');
+$check($customSegment->assets() === '/store/demo/static', '相对 assets 应拼在命名空间后');
+
+$emptySegment = new \Youvision\ThinkStoreExample\StoreExample(['route' => ['segment' => '']], $packageRoot);
+$check($emptySegment->base() === '/store', 'segment 为空时应直接挂在路由前缀下');
+$check($emptySegment->home() === '/store/index', 'segment 为空时首页应挂在路由前缀下');
+
+$absoluteAssets = new \Youvision\ThinkStoreExample\StoreExample(['assets' => '/static/store/'], $packageRoot);
+$check($absoluteAssets->assets() === '/static/store', '绝对 assets 应原样使用并去除末尾斜杠');
 
 $poems = new \Youvision\ThinkStoreExample\Poems();
 
@@ -224,7 +246,7 @@ $check(!str_contains($readme, 'think-static'), 'README 不应继续描述 think-
 
 function checkTemplateLinks(string $source, callable $check): void
 {
-    $check(str_contains($source, '{$base}'), '导航应使用 {$base} 推导首页地址');
+    $check(str_contains($source, '{$home}'), '导航应使用 {$home} 推导首页地址');
     $check(str_contains($source, '{$base}/intro'), '导航应链接项目介绍页');
     $check(str_contains($source, '{$base}/poems'), '导航应链接唐诗示例页');
     $check(str_contains($source, '{$base}/detail'), '导航应链接示例详情页');

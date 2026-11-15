@@ -62,6 +62,7 @@ class StoreExampleController
 
         return $this->view->render($template, [
             'base'        => $base,
+            'home'        => $this->example->home(),
             'assets'      => $assets,
             'api'         => $this->example->api(),
             'version'     => $this->example->version(),

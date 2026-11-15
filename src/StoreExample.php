@@ -7,11 +7,13 @@ namespace Youvision\ThinkStoreExample;
 /**
  * 示例包元数据与可见地址。
  *
- * 页面、接口与静态资源地址都由这里推导，修改 route.prefix 后模板与页面脚本
- * 会跟随变化，避免在模板中散落硬编码路径。
+ * 页面、接口与静态资源地址都由这里推导，修改 route.prefix、route.segment
+ * 或 assets 后模板与页面脚本会跟随变化，避免在模板中散落硬编码路径。
  */
 class StoreExample
 {
+    public const DEFAULT_SEGMENT = 'think-store-example';
+
     protected string $packageRoot;
 
     public function __construct(protected array $config = [], string $packageRoot = '')
@@ -27,17 +29,38 @@ class StoreExample
      */
     public function base(): string
     {
-        $prefix = trim((string) ($this->config['route']['prefix'] ?? 'store'), '/');
+        $prefix  = trim((string) ($this->config['route']['prefix'] ?? 'store'), '/');
+        $segment = trim((string) ($this->config['route']['segment'] ?? self::DEFAULT_SEGMENT), '/');
 
-        return ($prefix === '' ? '' : '/' . $prefix) . '/think-store-example';
+        return ($prefix === '' ? '' : '/' . $prefix) . ($segment === '' ? '' : '/' . $segment);
+    }
+
+    /**
+     * 示例首页地址，例如 /store/think-store-example/index。
+     */
+    public function home(): string
+    {
+        return $this->base() . '/index';
     }
 
     /**
      * 包内静态资源地址，例如 /store/think-store-example/assets。
+     *
+     * assets 为相对路径时拼在包内命名空间后；以 / 开头时视为外部托管的绝对地址。
      */
     public function assets(): string
     {
-        return $this->base() . '/assets';
+        $raw = trim((string) ($this->config['assets'] ?? 'assets'));
+
+        if ($raw === '') {
+            $raw = 'assets';
+        }
+
+        if (str_starts_with($raw, '/')) {
+            return rtrim($raw, '/');
+        }
+
+        return $this->base() . '/' . trim($raw, '/');
     }
 
     /**
@@ -86,7 +109,7 @@ class StoreExample
         $base = $this->base();
 
         return [
-            ['method' => 'GET', 'path' => $base, 'name' => '首页', 'type' => '页面'],
+            ['method' => 'GET', 'path' => $this->home(), 'name' => '首页', 'type' => '页面'],
             ['method' => 'GET', 'path' => $base . '/intro', 'name' => '项目介绍', 'type' => '页面'],
             ['method' => 'GET', 'path' => $base . '/poems', 'name' => '唐诗示例', 'type' => '页面'],
             ['method' => 'GET', 'path' => $base . '/detail', 'name' => '示例详情', 'type' => '页面'],

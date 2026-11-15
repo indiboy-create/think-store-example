@@ -1,14 +1,13 @@
 <?php
 
+// 复制到项目 config/store_example.php 后即可覆盖下列默认值
 return [
     /*
     |--------------------------------------------------------------------------
     | 内置路由
     |--------------------------------------------------------------------------
-    | 控制示例页面、随机抽诗接口与包内静态资源是否随服务自动注册。
-    | 默认地址为 /store/think-store-example、/store/think-store-example/intro、
-    | /store/think-store-example/poems、/store/think-store-example/detail、
-    | /store/think-store-example/poems/random 与 /store/think-store-example/assets/<path>。
+    | 最终地址为 /{prefix}/{segment}/index、/{prefix}/{segment}/poems/random，
+    | 静态资源为 /{prefix}/{segment}/assets/*。
     */
     'route' => [
         // 是否启用内置路由；关闭后可在应用路由文件中自行定义
@@ -17,7 +16,10 @@ return [
         // 路由前缀，留空表示不添加前缀，例如 store、api/store
         'prefix' => 'store',
 
-        // 应用到整组路由的中间件，例如 [\app\middleware\Auth::class]
+        // 包内命名空间，留空表示页面直接挂在路由前缀下
+        'segment' => 'think-store-example',
+
+        // 应用到整组路由上的中间件，例如 [\app\middleware\Auth::class]
         'middleware' => [],
     ],
 
@@ -29,4 +31,12 @@ return [
     | 文件内容为数组，每项包含 id、title、author、type、contents 字段。
     */
     'data_file' => '',
+
+    /*
+    |--------------------------------------------------------------------------
+    | 静态资源
+    |--------------------------------------------------------------------------
+    | 相对路径会拼在包内命名空间后，也可填写以 / 开头的绝对路径。
+    */
+    'assets' => 'assets',
 ];

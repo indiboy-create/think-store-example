@@ -10,7 +10,7 @@
 - **包内视图渲染**：模板位于 `theme/view`，由包内 `View` 渲染器直接输出，主项目不需要复制视图。
 - **包内静态资源**：layui、样式与页面脚本由 assets 路由读取 `theme/assets` 后输出，路径经过 `realpath` 校验并拒绝目录穿越。
 - **随机抽诗接口**：从 `data/300.json` 的 319 首唐诗中随机返回一首。
-- **发布包声明**：在 `composer.json` 的 `extra.store.home` 中声明首页 `/store/think-store-example`，可被 `youvision/think-store` 识别。
+- **发布包声明**：在 `composer.json` 的 `extra.store.home` 中声明首页 `/store/think-store-example/index`，可被 `youvision/think-store` 识别。
 
 ## 环境要求
 
@@ -37,24 +37,24 @@ php think vendor:publish
 
 | 方法 | 地址 | 说明 |
 | --- | --- | --- |
-| GET | `/store/think-store-example` | 渲染示例首页 |
+| GET | `/store/think-store-example/index` | 渲染示例首页 |
 | GET | `/store/think-store-example/intro` | 渲染项目介绍页 |
 | GET | `/store/think-store-example/poems` | 渲染唐诗示例页 |
 | GET | `/store/think-store-example/detail` | 渲染示例详情页 |
 | GET | `/store/think-store-example/poems/random` | 随机返回一首唐诗 |
 | GET | `/store/think-store-example/assets/<path>` | 直接输出包内 `theme/assets`，含 layui 与样式 |
 
-路由前缀由 `config/store_example.php` 的 `route.prefix` 控制，默认 `store`；设为空字符串时地址变为 `/think-store-example`、`/think-store-example/poems` 等。
+路由前缀由 `config/store_example.php` 的 `route.prefix` 控制，默认 `store`；包内命名空间由 `route.segment` 控制，默认 `think-store-example`。`route.prefix` 设为空字符串时首页变为 `/think-store-example/index`；`route.segment` 设为空字符串时页面直接挂在路由前缀下，例如 `/store/index`。
 
 ## 页面与静态资源
 
 - 模板位于包内 `theme/view`，由包内 `View` 渲染器通过 think-view 的 `Think` 驱动渲染。
 - `theme/view/layout` 存放公共的 head、导航与页脚片段，四个页面通过 `{include}` 复用。
 - 静态资源由 `AssetController` 读取 `theme/assets` 后输出；资源响应带 `Cache-Control: public, max-age=86400`，字体、CSS、JS、图片等类型返回对应的 `Content-Type`。
-- 模板内的页面、接口与资源地址由 `StoreExample` 根据 `route.prefix` 推导，修改前缀后无需改动模板。
+- 模板内的页面、接口与资源地址由 `StoreExample` 根据 `route.prefix`、`route.segment` 与 `assets` 推导，修改配置后无需改动模板。
 
 ```text
-/store/think-store-example
+/store/think-store-example/index
 /store/think-store-example/poems
 /store/think-store-example/assets/layui/css/layui.css
 /store/think-store-example/assets/css/index.css
@@ -91,7 +91,9 @@ GET /store/think-store-example/poems/random
 | --- | --- | --- |
 | `route.enabled` | `true` | 是否自动注册页面、接口与资源路由；关闭后由主项目自行注册 |
 | `route.prefix` | `store` | 路由前缀，留空表示不添加前缀 |
+| `route.segment` | `think-store-example` | 包内命名空间，留空表示页面直接挂在路由前缀下 |
 | `route.middleware` | `[]` | 应用到整组路由的中间件，可填写类名或别名 |
+| `assets` | `assets` | 静态资源地址；相对路径拼在命名空间后，以 `/` 开头时视为绝对地址 |
 | `data_file` | 空字符串 | 诗库 JSON 文件的绝对路径；留空时使用包内 `data/300.json` |
 
 `Service` 会自动合并包内默认配置与主项目配置，项目侧配置优先。主项目可通过 `php think vendor:publish` 发布配置文件后修改，也可直接在 `config/store_example.php` 中覆盖；修改后清除 `runtime` 缓存即可生效。
@@ -112,14 +114,19 @@ $poem = $poems->random();
 
 /** @var StoreExample $example */
 $example = app(StoreExample::class);
-$home = $example->base(); // /store/think-store-example
+$base  = $example->base();  // /store/think-store-example
+$home  = $example->home();  // /store/think-store-example/index
+$asset = $example->assets(); // /store/think-store-example/assets
 ```
 
 `Poems` 与 `StoreExample` 的构造函数支持脱离容器使用：
 
 ```php
 $poems = new Poems(['data_file' => '/path/to/poems.json']);
-$example = new \Youvision\ThinkStoreExample\StoreExample(['route' => ['prefix' => 'store']], __DIR__);
+$example = new \Youvision\ThinkStoreExample\StoreExample([
+    'route'  => ['prefix' => 'store', 'segment' => 'think-store-example'],
+    'assets' => 'assets',
+], __DIR__);
 ```
 
 ## 目录结构
@@ -181,7 +188,7 @@ composer test
 php tests/verify.php
 ```
 
-验证脚本会检查 `composer.json` 的依赖、服务注册、配置声明与 `extra.store.home`，校验默认配置、路由文件、控制器与渲染器源码，测试包内 assets 路由的目录穿越防护，并读取 `data/300.json` 验证随机抽诗的数据结构、随机性与 `data_file` 配置。
+验证脚本会检查 `composer.json` 的依赖、服务注册、配置声明与 `extra.store.home`，校验默认配置、路由文件、控制器与渲染器源码，验证 `route.segment` 与 `assets` 对页面、接口和资源地址的推导，测试包内 assets 路由的目录穿越防护，并读取 `data/300.json` 验证随机抽诗的数据结构、随机性与 `data_file` 配置。
 
 ## 许可证
 
