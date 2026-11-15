@@ -48,7 +48,7 @@ php think vendor:publish
 
 ## 页面与静态资源
 
-- 模板位于包内 `theme/view`，由包内 `View` 渲染器通过 think-view 的 `Think` 驱动渲染。
+- 模板默认位于包内 `theme/view`，由包内 `View` 渲染器通过 think-view 的 `Think` 驱动渲染；将 `view` 配置为主项目 `view` 目录（与 `app` 同级）后，模板改为读取 `view/think-store-example`，便于在主项目中覆盖。
 - `theme/view/layout` 存放公共的 head、导航与页脚片段，四个页面通过 `{include}` 复用。
 - 静态资源由 `AssetController` 读取 `theme/assets` 后输出；资源响应带 `Cache-Control: public, max-age=86400`，字体、CSS、JS、图片等类型返回对应的 `Content-Type`。
 - 模板内的页面、接口与资源地址由 `StoreExample` 根据 `route.prefix`、`route.segment` 与 `assets` 推导，修改配置后无需改动模板。
@@ -95,6 +95,7 @@ JSON 接口统一挂在 `api` 段下，与示例页面路由区分。
 | `route.prefix` | `store` | 路由前缀，留空表示不添加前缀 |
 | `route.segment` | `think-store-example` | 包内命名空间，留空表示页面直接挂在路由前缀下 |
 | `route.middleware` | `[]` | 应用到整组路由的中间件，可填写类名或别名 |
+| `view` | 空字符串 | 主项目 `view` 目录（与 `app` 同级）；留空使用包内 `theme/view`，填写后使用该目录下的 `think-store-example` 子目录 |
 | `assets` | `assets` | 静态资源地址；相对路径拼在命名空间后，以 `/` 开头时视为绝对地址 |
 | `data_file` | 空字符串 | 诗库 JSON 文件的绝对路径；留空时使用包内 `data/300.json` |
 
@@ -137,7 +138,7 @@ $example = new \Youvision\ThinkStoreExample\StoreExample([
 think-store-example/
 ├─ composer.json
 ├─ config/
-│  └─ store_example.php          # 路由与诗库配置
+│  └─ store_example.php          # 路由、视图与诗库配置
 ├─ route/
 │  └─ store_example.php          # 页面、接口与资源路由
 ├─ src/

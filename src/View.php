@@ -8,9 +8,10 @@ use think\App;
 use think\view\driver\Think;
 
 /**
- * 包内视图渲染器。
+ * 视图渲染器。
  *
- * 模板固定使用 theme/view 目录，不依赖主项目的 view_path 配置；
+ * view 配置为空时使用包内 theme/view；不为空时取主项目 view 目录下的
+ * think-store-example 目录，便于在主项目中覆盖模板。
  * think-view 的 fetch() 直接输出内容，因此用输出缓冲捕获并返回字符串。
  */
 class View
@@ -21,7 +22,7 @@ class View
 
     public function __construct(protected App $app)
     {
-        $this->path = dirname(__DIR__) . '/theme/view/';
+        $this->path = $this->resolvePath();
     }
 
     /**
@@ -46,6 +47,27 @@ class View
         }
 
         return (string) ob_get_clean();
+    }
+
+    /**
+     * 解析模板目录。
+     *
+     * view 留空：包内 theme/view。
+     * view 非空：相对路径按项目根目录解析（主项目 view 与 app 同级），
+     * 模板目录固定为其中的 think-store-example 子目录。
+     */
+    protected function resolvePath(): string
+    {
+        $view = rtrim((string) $this->app->config->get('store_example.view', ''), '/\\');
+
+        if ($view === '') {
+            return dirname(__DIR__) . '/theme/view/';
+        }
+
+        $absolute = str_starts_with($view, '/') || preg_match('/^[A-Za-z]:[\/\\\\]/', $view) === 1;
+        $root     = $absolute ? '' : $this->app->getRootPath();
+
+        return rtrim($root . $view, '/\\') . '/think-store-example/';
     }
 
     /**

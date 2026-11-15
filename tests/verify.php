@@ -91,6 +91,7 @@ $check(($config['route']['prefix'] ?? '') === 'store', '默认路由前缀应为
 $check(($config['route']['segment'] ?? '') === 'think-store-example', '默认包内命名空间应为 think-store-example');
 $check(($config['route']['middleware'] ?? null) === [], '默认路由中间件应为空数组');
 $check(($config['assets'] ?? '') === 'assets', '默认静态资源路径应为 assets');
+$check(($config['view'] ?? null) === '', '默认 view 应为空并使用包内视图');
 $check(($config['data_file'] ?? null) === '', '默认应使用包内诗库文件');
 $check(!isset($config['route']['rule']), '路由规则固定，不应保留 route.rule 配置');
 
@@ -123,7 +124,10 @@ $check(str_contains($serviceSource, 'Poems::class'), '服务应绑定 Poems');
 $check(str_contains($serviceSource, 'View::class'), '服务应注册 View 渲染器');
 
 $viewSource = (string) file_get_contents($packageRoot . '/src/View.php');
-$check(str_contains($viewSource, 'theme/view'), 'View 渲染器应固定使用 theme/view');
+$check(str_contains($viewSource, 'theme/view'), 'View 渲染器应支持包内 theme/view');
+$check(str_contains($viewSource, 'store_example.view'), 'View 渲染器应读取 view 配置');
+$check(str_contains($viewSource, 'think-store-example'), 'View 渲染器应在 view 非空时定位主项目 think-store-example 目录');
+$check(str_contains($viewSource, 'getRootPath'), 'View 渲染器应将相对 view 路径解析到项目根目录');
 $check(str_contains($viewSource, 'store_example_'), 'View 渲染器应使用 store_example_ 缓存前缀');
 $check(str_contains($viewSource, 'ob_start'), 'View 渲染器应捕获 think-view 输出');
 
