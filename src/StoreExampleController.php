@@ -62,6 +62,34 @@ class StoreExampleController
         ]);
     }
 
+    /**
+     * 内嵌页面汇总：列表展示所有可被 iframe 调用的页面，并提供预览。
+     */
+    public function iframe(): string
+    {
+        $base  = $this->example->base();
+        $pages = [
+            [
+                'name'        => '唐诗示例',
+                'path'        => $base . '/iframe/poems',
+                'description' => '随机抽诗接口配合 layui 数据表格，只输出内容区，适合嵌入后台管理系统。',
+            ],
+        ];
+
+        return $this->render(
+            'iframe',
+            'iframe',
+            '内嵌页面示例',
+            '汇总可被其他系统通过 iframe 调用的页面，支持列表预览与新窗口打开。',
+            [
+
+                'iframePagesJson' => json_encode($pages, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
+                'iframeDefault'   => $pages[0]['path'],
+                'iframeCount'     => count($pages),
+            ]
+        );
+    }
+
     public function detail(): string
     {
         return $this->render(
@@ -72,12 +100,12 @@ class StoreExampleController
         );
     }
 
-    protected function render(string $template, string $active, string $title, string $description): string
+    protected function render(string $template, string $active, string $title, string $description, array $extra = []): string
     {
         $base   = $this->example->base();
         $assets = $this->example->assets();
 
-        return $this->view->render($template, [
+        return $this->view->render($template, array_merge([
             'base'        => $base,
             'home'        => $this->example->home(),
             'assets'      => $assets,
@@ -89,7 +117,7 @@ class StoreExampleController
             'poemCount'   => $this->poemCount(),
             'meta'        => $this->meta(),
             'routesJson'  => json_encode($this->example->routes(), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES),
-        ]);
+        ], $extra));
     }
 
     /**

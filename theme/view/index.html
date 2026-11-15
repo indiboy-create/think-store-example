@@ -17,99 +17,128 @@
             <li class="layui-nav-item"><a href="{$base}/intro">项目介绍</a></li>
             <li class="layui-nav-item"><a href="{$base}/poems">唐诗示例</a></li>
             <li class="layui-nav-item"><a href="{$base}/detail">示例详情</a></li>
+            <li class="layui-nav-item"><a href="{$base}/iframe">内嵌示例</a></li>
         </ul>
-        <span class="store-version">{$version}</span>
+        <a class="store-github-link" href="https://github.com/indiboy-create" target="_blank" rel="noopener"><i class="layui-icon layui-icon-github"></i><span>GitHub</span></a>
     </div>
 </header>
+<section class="store-hero store-hero--home">
+            <div class="store-hero__main">
+                <p class="store-eyebrow">youvision/think-store-example</p>
+                <h1 class="store-title">包内<em>视图、资源路由</em>与随机诗接口，一次看懂</h1>
+                <p class="store-subtitle">面向 ThinkPHP 8 的示例发布包：页面由包内 think-view 渲染，layui 资源经 assets 路由输出，无需发布到 public；随机抽诗接口演示路由注册与 JSON 响应。</p>
+                <p class="store-actions">
+                    <a class="layui-btn layui-btn-normal" href="{$base}/poems">体验随机抽诗</a>
+                    <a class="layui-btn layui-btn-primary" href="{$base}/intro">了解实现方式</a>
+                </p>
+            </div>
+            <ul class="store-hero__stats">
+                <li><strong>{$poemCount}</strong><span>首唐诗</span></li>
+                <li><strong>5</strong><span>个示例页面</span></li>
+                <li><strong>1</strong><span>个 JSON 接口</span></li>
+                <li><strong>0</strong><span>public 发布</span></li>
+            </ul>
+    </section>
 <main class="store-main" data-base="{$base}" data-api="{$api}" data-assets="{$assets}">
     <div class="layui-container">
-        <section class="store-hero">
-            <p class="store-eyebrow">youvision/think-store-example</p>
-            <h1 class="store-title">Think Store Example：包内视图与随机诗接口示例</h1>
-            <p class="store-subtitle">面向 ThinkPHP 8 的示例发布包：页面由包内 think-view 渲染，layui 资源由 assets 路由输出，无需发布到 public；同时提供基于路由的随机抽诗接口。</p>
-            <p class="store-actions">
-                <a class="layui-btn layui-btn-normal" href="{$base}/intro">查看项目介绍</a>
-                <a class="layui-btn layui-btn-primary" href="{$base}/poems">打开唐诗示例</a>
-            </p>
-        </section>
-
-        <div class="layui-row layui-col-space15">
-            <div class="layui-col-md6">
-                <div class="layui-card store-card">
+        <section class="store-section">
+            <div class="store-section__head store-section__head--split">
+                <div>
+                    <span class="store-eyebrow">01 · Capabilities</span>
+                    <h2 class="store-section__title">包内自带的能力</h2>
+                </div>
+                <p class="store-section__desc">视图、资源、接口与页面样式都随包提供，宿主项目只需安装依赖并访问路由。</p>
+            </div>
+            <div class="store-grid store-grid--cards">
+                <article class="layui-card store-card">
+                    <span class="store-card__index">01</span>
                     <div class="layui-card-header">
-                        <span class="layui-badge layui-bg-blue">view</span>
+                        <span class="store-card__icon"><i class="layui-icon layui-icon-template-1"></i></span>
                         <span class="store-card__title">包内视图渲染</span>
                     </div>
                     <div class="layui-card-body">
                         <p class="store-card__desc">theme/view 下的模板由包内 View 渲染器通过 think-view 直接输出，主项目不需要复制视图文件。</p>
-                        <p class="store-card__meta">topthink/think-view · 缓存前缀 store_example_</p>
                     </div>
-                </div>
-            </div>
-            <div class="layui-col-md6">
-                <div class="layui-card store-card">
+                    <div class="store-card__footer">topthink/think-view · 缓存前缀 store_example_</div>
+                </article>
+                <article class="layui-card store-card">
+                    <span class="store-card__index">02</span>
                     <div class="layui-card-header">
-                        <span class="layui-badge layui-bg-green">assets</span>
+                        <span class="store-card__icon"><i class="layui-icon layui-icon-folder"></i></span>
                         <span class="store-card__title">包内静态资源</span>
                     </div>
                     <div class="layui-card-body">
                         <p class="store-card__desc">layui 与自定义样式由 assets 路由直接读取 theme/assets 输出，路径经过 realpath 校验并拒绝目录穿越。</p>
-                        <p class="store-card__meta">{$assets}/&lt;path&gt; · 缓存 1 天</p>
                     </div>
-                </div>
-            </div>
-            <div class="layui-col-md6">
-                <div class="layui-card store-card">
+                    <div class="store-card__footer">{$assets}/&lt;path&gt; · 缓存 1 天</div>
+                </article>
+                <article class="layui-card store-card">
+                    <span class="store-card__index">03</span>
                     <div class="layui-card-header">
-                        <span class="layui-badge layui-bg-blue">api</span>
+                        <span class="store-card__icon"><i class="layui-icon layui-icon-code-circle"></i></span>
                         <span class="store-card__title">随机抽诗接口</span>
                     </div>
                     <div class="layui-card-body">
                         <p class="store-card__desc">从 data/300.json 的 {$poemCount} 首唐诗中随机抽取一首，通过随机抽诗路由返回 JSON 数据。</p>
-                        <p class="store-card__meta">GET {$api}</p>
                     </div>
-                </div>
-            </div>
-            <div class="layui-col-md6">
-                <div class="layui-card store-card">
+                    <div class="store-card__footer">GET {$api}</div>
+                </article>
+                <article class="layui-card store-card">
+                    <span class="store-card__index">04</span>
                     <div class="layui-card-header">
-                        <span class="layui-badge layui-bg-green">layui</span>
+                        <span class="store-card__icon"><i class="layui-icon layui-icon-layouts"></i></span>
                         <span class="store-card__title">layui 页面</span>
                     </div>
                     <div class="layui-card-body">
                         <p class="store-card__desc">页面沿用 layui 组件与现有配色，自定义样式集中在 theme/assets/css/index.css，并适配移动端。</p>
-                        <p class="store-card__meta">layui 2.13.9 · 响应式布局</p>
                     </div>
-                </div>
+                    <div class="store-card__footer">layui 2.13.9 · 响应式布局</div>
+                </article>
             </div>
-        </div>
+        </section>
 
         <section class="store-section">
-            <div class="store-section__head">
-                <span class="store-eyebrow">Quick start</span>
-                <h2 class="store-section__title">三步查看示例</h2>
+            <div class="store-section__head store-section__head--split">
+                <div>
+                    <span class="store-eyebrow">02 · Quick start</span>
+                    <h2 class="store-section__title">三步查看示例</h2>
+                </div>
                 <p class="store-section__desc">安装为依赖后，路由、视图与静态资源全部由包内提供，不需要修改主项目目录。</p>
             </div>
             <ol class="store-steps">
-                <li><span class="store-step__index">01</span><span>安装包：<code>composer require youvision/think-store-example</code></span></li>
-                <li><span class="store-step__index">02</span><span>访问首页：<code>{$home}</code></span></li>
-                <li><span class="store-step__index">03</span><span>打开唐诗示例：<code>{$base}/poems</code>，接口为 <code>{$api}</code></span></li>
+                <li>
+                    <span class="store-step__index">01</span>
+                    <strong class="store-step__title">安装包</strong>
+                    <span class="store-step__desc"><code>composer require youvision/think-store-example</code></span>
+                </li>
+                <li>
+                    <span class="store-step__index">02</span>
+                    <strong class="store-step__title">访问首页</strong>
+                    <span class="store-step__desc"><code>{$home}</code></span>
+                </li>
+                <li>
+                    <span class="store-step__index">03</span>
+                    <strong class="store-step__title">打开示例</strong>
+                    <span class="store-step__desc">唐诗页 <code>{$base}/poems</code>，接口 <code>{$api}</code></span>
+                </li>
             </ol>
         </section>
 
-        <section class="store-cta">
-            <div class="store-cta__text">
-                <span class="store-eyebrow">Get started</span>
-                <h2 class="store-cta__title">从 Composer 开始使用示例包</h2>
-                <p class="store-cta__desc">安装 <code>youvision/think-store-example</code> 后即可访问全部示例页面；路由、视图与静态资源均由包内提供，也可按项目需要替换。</p>
-            </div>
-            <div class="store-cta__actions">
-                <a class="layui-btn layui-btn-normal" href="https://github.com/indiboy-create/think-store" target="_blank" rel="noopener">访问 GitHub</a>
-                <a class="layui-btn layui-btn-primary" href="{$base}/intro">查看使用文档</a>
-            </div>
-        </section>
-    </div>
+        </div>
 </main>
+<div class="layui-container">
+    <section class="store-cta">
+        <div class="store-cta__text">
+            <span class="store-eyebrow">Ecosystem</span>
+            <h2 class="store-cta__title">从 ThinkPHP-PanGu 开始，按需组合</h2>
+            <p class="store-cta__desc">所有组件均以 Composer 包形式发布，仓库、README 与 Issue 都在 GitHub 上。遇到问题或想补充能力，可以直接提 Issue。</p>
+        </div>
+        <div class="store-cta__actions">
+            <a class="layui-btn layui-btn-normal" href="https://indiboy-create.github.io/ThinkPHP-PanGu/" target="_blank" rel="noopener"><i class="layui-icon layui-icon-github"></i> GitHub</a>
+            <a class="layui-btn layui-btn-primary" href="https://indiboy-create.github.io/ThinkPHP-PanGu/packages.html" target="_blank" rel="noopener">挑一个组件</a>
+        </div>
+    </section>
+</div>
 <footer class="store-footer">
     <div class="layui-container">
         <div class="store-footer__grid">
@@ -134,7 +163,7 @@
                 <div class="store-footer__links">
                     <a href="{$api}">随机抽诗 JSON</a>
                     <a href="{$home}">示例首页</a>
-                    <a href="{$base}/intro">使用文档</a>
+                    <a href="{$base}/iframe">内嵌页面</a>
                     <a href="{$assets}/layui/css/layui.css">静态资源</a>
                 </div>
             </div>
@@ -150,7 +179,7 @@
         </div>
         <div class="store-footer__bottom">
             <span>© 2026 youvision/think-store-example</span>
-            <span>Built with ThinkPHP 8 · Layui 2.13.9 <span class="store-footer__version">{$version}</span></span>
+            <span>Built with ThinkPHP 8 · Layui 2.13.9</span>
         </div>
     </div>
 </footer>

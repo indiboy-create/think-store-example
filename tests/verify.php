@@ -63,10 +63,12 @@ $files = [
     'theme/view/intro.html',
     'theme/view/poems.html',
     'theme/view/detail.html',
+    'theme/view/iframe.html',
     'theme/view/iframe/poems.html',
     'theme/assets/css/index.css',
     'theme/assets/iframe/css/poems.css',
     'theme/assets/iframe/js/poems.js',
+    'theme/assets/js/iframe.js',
     'theme/assets/js/common.js',
     'theme/assets/js/poems.js',
     'theme/assets/js/detail.js',
@@ -105,6 +107,7 @@ foreach ([
     "\$base . 'index'",
     "\$base . 'intro'",
     "\$base . 'poems'",
+    "\$base . 'iframe'",
     "\$base . 'iframe/poems'",
     "\$base . 'detail'",
     "\$base . 'api/poems/random'",
@@ -144,6 +147,7 @@ $pageScripts = [
     'intro'  => [],
     'poems'  => ['poems.js'],
     'detail' => ['detail.js'],
+    'iframe' => ['iframe.js'],
 ];
 
 foreach ($pageScripts as $page => $scripts) {
@@ -177,6 +181,14 @@ $check(!str_contains($indexSource, 'store-search') && !str_contains($indexSource
 $detailSource = (string) file_get_contents($packageRoot . '/theme/view/detail.html');
 $check(str_contains($detailSource, '{$routesJson|raw}'), '详情页应原样输出路由 JSON');
 $check(str_contains($detailSource, 'route-table'), '详情页应使用 layui 数据表格渲染路由清单');
+$check(!str_contains($detailSource, '包信息'), '详情页不应再包含包信息面板');
+
+$introSource = (string) file_get_contents($packageRoot . '/theme/view/intro.html');
+$check(str_contains($introSource, '包信息'), '介绍页应包含包信息面板');
+$check(str_contains($introSource, '{volist name="meta"'), '介绍页应渲染包元数据');
+$check(str_contains($introSource, 'store-intro-grid'), '介绍页应使用包信息与目录职责两栏布局');
+$check(str_contains($introSource, 'store-flow'), '介绍页应使用流程视图展示路由与资源');
+$check(str_contains($introSource, 'store-tabs__index'), '介绍页选项卡应带序号');
 
 $poemsSource = (string) file_get_contents($packageRoot . '/theme/view/poems.html');
 $check(str_contains($poemsSource, '{$api}'), '唐诗页应展示推导后的接口地址');
@@ -191,6 +203,16 @@ $check(str_contains($iframePoemsSource, '{$api}'), 'iframe 唐诗页应使用推
 $check(str_contains($iframePoemsSource, '{$iframeUrl}'), 'iframe 唐诗页应展示自身地址');
 $check(!str_contains($iframePoemsSource, '<header class="store-header">'), 'iframe 唐诗页不应包含站点导航');
 $check(!str_contains($iframePoemsSource, '<footer class="store-footer">'), 'iframe 唐诗页不应包含站点页脚');
+
+$iframePageSource = (string) file_get_contents($packageRoot . '/theme/view/iframe.html');
+$check(str_contains($iframePageSource, '<!DOCTYPE html>'), 'iframe.html 应为完整 HTML 页面');
+$check(str_contains($iframePageSource, '<header class="store-header">'), 'iframe.html 应内联站点导航');
+$check(str_contains($iframePageSource, '<footer class="store-footer">'), 'iframe.html 应内联站点页脚');
+$check(str_contains($iframePageSource, '{$base}/iframe">内嵌示例'), 'iframe.html 导航应包含内嵌示例菜单');
+$check(str_contains($iframePageSource, 'iframe-table'), 'iframe.html 应使用 layui 数据表格展示页面列表');
+$check(str_contains($iframePageSource, '{$iframePagesJson|raw}'), 'iframe.html 应原样输出页面清单 JSON');
+$check(str_contains($iframePageSource, 'store-iframe__frame'), 'iframe.html 应包含 iframe 预览区域');
+$check(str_contains($iframePageSource, '{$assets}/js/iframe.js'), 'iframe.html 应加载独立脚本');
 
 $example = new \Youvision\ThinkStoreExample\StoreExample(['route' => ['prefix' => 'store']], $packageRoot);
 
@@ -287,6 +309,7 @@ function checkTemplateLinks(string $source, callable $check): void
     $check(str_contains($source, '{$base}/intro'), '导航应链接项目介绍页');
     $check(str_contains($source, '{$base}/poems'), '导航应链接唐诗示例页');
     $check(str_contains($source, '{$base}/detail'), '导航应链接示例详情页');
+    $check(str_contains($source, '{$base}/iframe'), '导航应链接内嵌示例页');
 }
 
 if ($failures === []) {

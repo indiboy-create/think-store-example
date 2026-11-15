@@ -29,6 +29,9 @@ $register = static function () use ($segment): void {
     Route::get($base . 'index', [StoreExampleController::class, 'index'])->name('store_example.index')->completeMatch();
     Route::get($base . 'intro', [StoreExampleController::class, 'intro'])->name('store_example.intro')->completeMatch();
     Route::get($base . 'poems', [StoreExampleController::class, 'poems'])->name('store_example.poems')->completeMatch();
+    Route::get($base . 'iframe', [StoreExampleController::class, 'iframe'])
+        ->name('store_example.iframe')
+        ->completeMatch();
     Route::get($base . 'iframe/poems', [StoreExampleController::class, 'iframePoems'])
         ->name('store_example.iframe.poems')
         ->completeMatch();

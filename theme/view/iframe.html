@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{$title} - Think Store Example</title>
+<meta name="description" content="{$description}">
+<link rel="stylesheet" href="{$assets}/layui/css/layui.css">
+<link rel="stylesheet" href="{$assets}/css/index.css">
+</head>
+<body class="store-page">
+<header class="store-header">
+    <div class="layui-container store-header__inner">
+        <a class="store-brand" href="{$home}">Think Store Example</a>
+        <ul class="layui-nav store-nav" lay-filter="store-nav">
+            <li class="layui-nav-item"><a href="{$home}">首页</a></li>
+            <li class="layui-nav-item"><a href="{$base}/intro">项目介绍</a></li>
+            <li class="layui-nav-item"><a href="{$base}/poems">唐诗示例</a></li>
+            <li class="layui-nav-item"><a href="{$base}/detail">示例详情</a></li>
+            <li class="layui-nav-item layui-this"><a href="{$base}/iframe">内嵌示例</a></li>
+        </ul>
+        <a class="store-github-link" href="https://github.com/indiboy-create" target="_blank" rel="noopener"><i class="layui-icon layui-icon-github"></i><span>GitHub</span></a>
+    </div>
+</header>
+<section class="store-hero store-hero--compact">
+            <p class="store-eyebrow">iframe · {$iframeCount} 个页面</p>
+            <h1 class="store-title"><em>内嵌页面</em>示例</h1>
+            <p class="store-subtitle">以下页面只输出内容区，不包含站点导航与页脚，适合通过 iframe 嵌入其他系统；页面清单集中在控制器维护，新增页面后自动出现在列表中。</p>
+            <p class="store-actions">
+                <a class="layui-btn layui-btn-normal" href="{$iframeDefault}" target="_blank" rel="noopener">新窗口打开唐诗页面</a>
+                <a class="layui-btn layui-btn-primary" href="{$base}/intro">查看项目介绍</a>
+            </p>
+    </section>
+<main class="store-main" data-base="{$base}" data-api="{$api}" data-assets="{$assets}">
+    <div class="layui-container">
+        <section class="store-section">
+            <div class="store-section__head store-section__head--split">
+                <div>
+                    <span class="store-eyebrow">01 · Pages</span>
+                    <h2 class="store-section__title">可内嵌页面列表</h2>
+                </div>
+                <p class="store-section__desc">点击「预览」在当前页面加载对应 iframe，或在新窗口单独打开。</p>
+            </div>
+            <div class="layui-card store-card">
+                <div class="layui-card-body store-table-wrap">
+                    <table id="iframe-table" lay-filter="iframe-table"></table>
+                </div>
+            </div>
+        </section>
+
+        <section class="store-section">
+            <div class="store-section__head store-section__head--split">
+                <div>
+                    <span class="store-eyebrow">02 · Preview</span>
+                    <h2 class="store-section__title">iframe 预览</h2>
+                </div>
+                <p class="store-section__desc">预览区宽度跟随容器变化，验证内嵌页面在窄屏下的表现。</p>
+            </div>
+            <div class="store-iframe__preview">
+                <div class="store-iframe__preview-head">
+                    <span>当前页面：<code id="iframe-current">{$iframeDefault}</code></span>
+                    <a class="store-iframe__open" id="iframe-open" href="{$iframeDefault}" target="_blank" rel="noopener">新窗口打开</a>
+                </div>
+                <iframe class="store-iframe__frame" id="iframe-preview" src="{$iframeDefault}" title="内嵌页面预览" loading="lazy"></iframe>
+            </div>
+            <p class="store-iframe__note">若宿主站点设置了 X-Frame-Options 或 CSP 限制，预览区可能显示空白，此时可直接在新窗口打开。</p>
+        </section>
+
+        </div>
+</main>
+<div class="layui-container">
+    <section class="store-cta">
+        <div class="store-cta__text">
+            <span class="store-eyebrow">Ecosystem</span>
+            <h2 class="store-cta__title">从 ThinkPHP-PanGu 开始，按需组合</h2>
+            <p class="store-cta__desc">所有组件均以 Composer 包形式发布，仓库、README 与 Issue 都在 GitHub 上。遇到问题或想补充能力，可以直接提 Issue。</p>
+        </div>
+        <div class="store-cta__actions">
+            <a class="layui-btn layui-btn-normal" href="https://indiboy-create.github.io/ThinkPHP-PanGu/" target="_blank" rel="noopener"><i class="layui-icon layui-icon-github"></i> GitHub</a>
+            <a class="layui-btn layui-btn-primary" href="https://indiboy-create.github.io/ThinkPHP-PanGu/packages.html" target="_blank" rel="noopener">挑一个组件</a>
+        </div>
+    </section>
+</div>
+<footer class="store-footer">
+    <div class="layui-container">
+        <div class="store-footer__grid">
+            <div class="store-footer__brand">
+                <a class="store-brand store-footer__logo" href="{$home}">
+                    <span class="store-footer__mark"><i class="layui-icon layui-icon-cart-simple"></i></span>
+                    <span>Think Store Example<small>YOUVISION/THINK-STORE-EXAMPLE</small></span>
+                </a>
+                <p class="store-footer__desc">面向 ThinkPHP 8 的示例包，提供包内视图渲染、assets 静态资源路由与随机抽诗接口。</p>
+            </div>
+            <div class="store-footer__col">
+                <h4>能力</h4>
+                <div class="store-footer__links">
+                    <a href="{$base}/intro">包内视图渲染</a>
+                    <a href="{$base}/intro">静态资源路由</a>
+                    <a href="{$base}/poems">随机抽诗接口</a>
+                    <a href="{$base}/detail">配置项说明</a>
+                </div>
+            </div>
+            <div class="store-footer__col">
+                <h4>接口</h4>
+                <div class="store-footer__links">
+                    <a href="{$api}">随机抽诗 JSON</a>
+                    <a href="{$home}">示例首页</a>
+                    <a href="{$base}/iframe">内嵌页面</a>
+                    <a href="{$assets}/layui/css/layui.css">静态资源</a>
+                </div>
+            </div>
+            <div class="store-footer__col">
+                <h4>资源</h4>
+                <div class="store-footer__links">
+                    <a href="https://github.com/indiboy-create/think-store" target="_blank" rel="noopener">GitHub 仓库</a>
+                    <a href="https://github.com/indiboy-create/think-store#readme" target="_blank" rel="noopener">使用文档</a>
+                    <a href="https://layui.dev/" target="_blank" rel="noopener">Layui 文档</a>
+                    <a href="https://www.thinkphp.cn/" target="_blank" rel="noopener">ThinkPHP 官网</a>
+                </div>
+            </div>
+        </div>
+        <div class="store-footer__bottom">
+            <span>© 2026 youvision/think-store-example</span>
+            <span>Built with ThinkPHP 8 · Layui 2.13.9</span>
+        </div>
+    </div>
+</footer>
+<script type="application/json" id="iframe-pages">{$iframePagesJson|raw}</script>
+<script src="{$assets}/layui/layui.js"></script>
+<script src="{$assets}/js/common.js"></script>
+<script src="{$assets}/js/iframe.js"></script>
+</body>
+</html>

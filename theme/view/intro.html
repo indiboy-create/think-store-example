@@ -17,76 +17,211 @@
             <li class="layui-nav-item layui-this"><a href="{$base}/intro">项目介绍</a></li>
             <li class="layui-nav-item"><a href="{$base}/poems">唐诗示例</a></li>
             <li class="layui-nav-item"><a href="{$base}/detail">示例详情</a></li>
+            <li class="layui-nav-item"><a href="{$base}/iframe">内嵌示例</a></li>
         </ul>
-        <span class="store-version">{$version}</span>
+        <a class="store-github-link" href="https://github.com/indiboy-create" target="_blank" rel="noopener"><i class="layui-icon layui-icon-github"></i><span>GitHub</span></a>
     </div>
 </header>
+<section class="store-hero store-hero--compact">
+            <p class="store-eyebrow">实例说明</p>
+            <h1 class="store-title">这个包如何被<em>安装与渲染</em></h1>
+            <p class="store-subtitle">Think Store Example 只作为依赖安装到已有 ThinkPHP 8 项目。服务启动时合并配置并加载路由，页面由包内视图渲染，静态资源通过 assets 路由输出。</p>
+            <div class="store-install">
+                <span class="store-install__label">Composer</span>
+                <code>composer require youvision/think-store-example</code>
+            </div>
+    </section>
 <main class="store-main" data-base="{$base}" data-api="{$api}" data-assets="{$assets}">
     <div class="layui-container">
-        <section class="store-hero">
-            <p class="store-eyebrow">实例说明</p>
-            <h1 class="store-title">这个包如何被安装与渲染</h1>
-            <p class="store-subtitle">Think Store Example 只作为依赖安装到已有 ThinkPHP 8 项目。服务启动时合并配置并加载路由，页面由包内视图渲染，静态资源通过 assets 路由输出。</p>
-        </section>
-
-        <div class="layui-tab layui-tab-brief store-tabs" lay-filter="intro-tabs">
-            <ul class="layui-tab-title">
-                <li class="layui-this">目录职责</li>
-                <li>路由与资源</li>
-                <li>配置合并</li>
-            </ul>
-            <div class="layui-tab-content">
-                <div class="layui-tab-item layui-show">
-                    <ul class="store-list">
-                        <li><code>theme/view/</code>：包内模板，由 <code>View</code> 渲染器固定从该目录读取。</li>
-                        <li><code>theme/assets/</code>：layui、样式与页面脚本，通过 assets 路由输出。</li>
-                        <li><code>config/store_example.php</code>：路由与诗库配置，可与主项目配置合并。</li>
-                        <li><code>route/store_example.php</code>：页面、随机抽诗接口与静态资源路由。</li>
-                        <li><code>src/</code>：服务注册、视图渲染、资源输出、页面控制与诗库读取。</li>
-                        <li><code>data/300.json</code>：诗库数据，共 {$poemCount} 首。</li>
-                    </ul>
+        <section class="store-section">
+            <div class="store-section__head store-section__head--split">
+                <div>
+                    <span class="store-eyebrow">01 · Overview</span>
+                    <h2 class="store-section__title">包信息与目录结构</h2>
                 </div>
-                <div class="layui-tab-item">
-                    <ol class="store-list store-list--ordered">
-                        <li><code>Service::boot()</code> 在 <code>route.enabled</code> 为真时加载 <code>route/store_example.php</code>。</li>
-                        <li>页面路由指向 <code>StoreExampleController</code>，由 <code>View</code> 渲染 <code>theme/view</code> 下的模板。</li>
-                        <li>模板中的页面、接口与资源地址由 <code>StoreExample</code> 根据 <code>route.prefix</code>、<code>route.segment</code> 与 <code>assets</code> 推导，避免硬编码。</li>
-                        <li>assets 路由读取 <code>theme/assets</code>，经 <code>realpath</code> 校验后输出并附加 1 天缓存。</li>
-                        <li>接口路由指向 <code>PoemController</code>，从诗库随机返回一首诗。</li>
-                    </ol>
+                <p class="store-section__desc">安装后由服务注册路由、合并配置，并固定从包内 theme/view 读取模板。</p>
+            </div>
+            <div class="store-intro-grid">
+                <div class="layui-card store-panel">
+                    <div class="layui-card-header">
+                        <span class="store-panel__title">包信息</span>
+                        <span class="store-panel__hint">meta</span>
+                    </div>
+                    <div class="layui-card-body">
+                        <table class="layui-table store-table" lay-skin="line">
+                            <colgroup>
+                                <col width="110">
+                                <col>
+                            </colgroup>
+                            <tbody>
+                                {volist name="meta" id="item"}
+                                <tr>
+                                    <td>{$item.label}</td>
+                                    <td>{$item.value}</td>
+                                </tr>
+                                {/volist}
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
-                <div class="layui-tab-item">
-                    <ul class="store-list">
-                        <li>包内默认配置与主项目 <code>config/store_example.php</code> 使用 <code>array_replace_recursive</code> 合并，项目侧优先。</li>
-                        <li><code>route.prefix</code> 默认 <code>store</code>，留空时页面地址变为 <code>/think-store-example/index</code>。</li>
-                        <li><code>route.segment</code> 默认 <code>think-store-example</code>，留空时页面直接挂在路由前缀下。</li>
-                        <li><code>route.middleware</code> 应用到整组路由，可填写类名或别名。</li>
-                        <li><code>assets</code> 默认 <code>assets</code>，相对路径拼在命名空间后，以 <code>/</code> 开头时视为绝对地址。</li>
-                        <li><code>data_file</code> 可指向自定义诗库 JSON；留空时使用包内 <code>data/300.json</code>。</li>
-                        <li>修改配置后清除 <code>runtime</code> 缓存即可生效。</li>
-                    </ul>
+                <div class="layui-card store-panel">
+                    <div class="layui-card-header">
+                        <span class="store-panel__title">目录职责</span>
+                        <span class="store-panel__hint">tree</span>
+                    </div>
+                    <div class="layui-card-body">
+                        <ul class="store-tree">
+                            <li>
+                                <code>theme/view/</code>
+                                <span>包内模板，由 <code>View</code> 渲染器固定从该目录读取。</span>
+                            </li>
+                            <li>
+                                <code>theme/assets/</code>
+                                <span>layui、样式与页面脚本，通过 assets 路由输出。</span>
+                            </li>
+                            <li>
+                                <code>config/store_example.php</code>
+                                <span>路由与诗库配置，可与主项目配置合并。</span>
+                            </li>
+                            <li>
+                                <code>route/store_example.php</code>
+                                <span>页面、随机抽诗接口与静态资源路由。</span>
+                            </li>
+                            <li>
+                                <code>src/</code>
+                                <span>服务注册、视图渲染、资源输出、页面控制与诗库读取。</span>
+                            </li>
+                            <li>
+                                <code>data/300.json</code>
+                                <span>诗库数据，共 {$poemCount} 首。</span>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
+        </section>
+
+        <section class="store-section">
+            <div class="store-section__head store-section__head--split">
+                <div>
+                    <span class="store-eyebrow">02 · How it works</span>
+                    <h2 class="store-section__title">路由、资源与配置合并</h2>
+                </div>
+                <p class="store-section__desc">从服务启动到页面输出，整个链路由包内代码完成，主项目只需要维护配置。</p>
+            </div>
+            <div class="layui-tab layui-tab-brief store-tabs" lay-filter="intro-tabs">
+                <ul class="layui-tab-title">
+                    <li class="layui-this"><span class="store-tabs__index">01</span>路由与资源</li>
+                    <li><span class="store-tabs__index">02</span>配置合并</li>
+                </ul>
+                <div class="layui-tab-content">
+                    <div class="layui-tab-item layui-show">
+                        <ol class="store-flow">
+                            <li>
+                                <span class="store-flow__index">01</span>
+                                <div class="store-flow__body">
+                                    <strong>加载路由</strong>
+                                    <p><code>Service::boot()</code> 在 <code>route.enabled</code> 为真时加载 <code>route/store_example.php</code>。</p>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="store-flow__index">02</span>
+                                <div class="store-flow__body">
+                                    <strong>渲染页面</strong>
+                                    <p>页面路由指向 <code>StoreExampleController</code>，由 <code>View</code> 渲染 <code>theme/view</code> 下的模板。</p>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="store-flow__index">03</span>
+                                <div class="store-flow__body">
+                                    <strong>推导地址</strong>
+                                    <p>页面、接口与资源地址由 <code>StoreExample</code> 根据 <code>route.prefix</code>、<code>route.segment</code> 与 <code>assets</code> 推导，避免硬编码。</p>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="store-flow__index">04</span>
+                                <div class="store-flow__body">
+                                    <strong>输出资源</strong>
+                                    <p>assets 路由读取 <code>theme/assets</code>，经 <code>realpath</code> 校验后输出并附加 1 天缓存。</p>
+                                </div>
+                            </li>
+                            <li>
+                                <span class="store-flow__index">05</span>
+                                <div class="store-flow__body">
+                                    <strong>返回数据</strong>
+                                    <p>接口路由指向 <code>PoemController</code>，从诗库随机返回一首诗。</p>
+                                </div>
+                            </li>
+                        </ol>
+                    </div>
+                    <div class="layui-tab-item">
+                        <p class="store-note">包内默认配置与主项目 <code>config/store_example.php</code> 使用 <code>array_replace_recursive</code> 合并，项目侧优先；修改后清除 <code>runtime</code> 缓存即可生效。</p>
+                        <table class="layui-table store-table" lay-skin="line">
+                            <colgroup>
+                                <col width="180">
+                                <col width="130">
+                                <col>
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th>配置项</th>
+                                    <th>默认值</th>
+                                    <th>说明</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>route.enabled</code></td>
+                                    <td><code>true</code></td>
+                                    <td>是否注册页面、接口与静态资源路由。</td>
+                                </tr>
+                                <tr>
+                                    <td><code>route.prefix</code></td>
+                                    <td><code>store</code></td>
+                                    <td>路由前缀，留空时页面地址变为 <code>/think-store-example/index</code>。</td>
+                                </tr>
+                                <tr>
+                                    <td><code>route.segment</code></td>
+                                    <td><code>think-store-example</code></td>
+                                    <td>包内命名空间，留空时页面直接挂在路由前缀下。</td>
+                                </tr>
+                                <tr>
+                                    <td><code>route.middleware</code></td>
+                                    <td><code>[]</code></td>
+                                    <td>应用到整组路由的中间件，可填写类名或别名。</td>
+                                </tr>
+                                <tr>
+                                    <td><code>assets</code></td>
+                                    <td><code>assets</code></td>
+                                    <td>相对路径拼在命名空间后，以 <code>/</code> 开头时视为绝对地址。</td>
+                                </tr>
+                                <tr>
+                                    <td><code>data_file</code></td>
+                                    <td>空字符串</td>
+                                    <td>自定义诗库 JSON；留空时使用包内 <code>data/300.json</code>。</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         </div>
-
-        <p class="store-actions">
-            <a class="layui-btn layui-btn-normal" href="{$home}">返回首页</a>
-            <a class="layui-btn layui-btn-primary" href="{$base}/detail">查看示例详情</a>
-        </p>
-
-        <section class="store-cta">
-            <div class="store-cta__text">
-                <span class="store-eyebrow">Get started</span>
-                <h2 class="store-cta__title">从 Composer 开始使用示例包</h2>
-                <p class="store-cta__desc">安装 <code>youvision/think-store-example</code> 后即可访问全部示例页面；路由、视图与静态资源均由包内提供，也可按项目需要替换。</p>
-            </div>
-            <div class="store-cta__actions">
-                <a class="layui-btn layui-btn-normal" href="https://github.com/indiboy-create/think-store" target="_blank" rel="noopener">访问 GitHub</a>
-                <a class="layui-btn layui-btn-primary" href="{$base}/intro">查看使用文档</a>
-            </div>
-        </section>
-    </div>
 </main>
+<div class="layui-container">
+    <section class="store-cta">
+        <div class="store-cta__text">
+            <span class="store-eyebrow">Ecosystem</span>
+            <h2 class="store-cta__title">从 ThinkPHP-PanGu 开始，按需组合</h2>
+            <p class="store-cta__desc">所有组件均以 Composer 包形式发布，仓库、README 与 Issue 都在 GitHub 上。遇到问题或想补充能力，可以直接提 Issue。</p>
+        </div>
+        <div class="store-cta__actions">
+            <a class="layui-btn layui-btn-normal" href="https://indiboy-create.github.io/ThinkPHP-PanGu/" target="_blank" rel="noopener"><i class="layui-icon layui-icon-github"></i> GitHub</a>
+            <a class="layui-btn layui-btn-primary" href="https://indiboy-create.github.io/ThinkPHP-PanGu/packages.html" target="_blank" rel="noopener">挑一个组件</a>
+        </div>
+    </section>
+</div>
 <footer class="store-footer">
     <div class="layui-container">
         <div class="store-footer__grid">
@@ -111,7 +246,7 @@
                 <div class="store-footer__links">
                     <a href="{$api}">随机抽诗 JSON</a>
                     <a href="{$home}">示例首页</a>
-                    <a href="{$base}/intro">使用文档</a>
+                    <a href="{$base}/iframe">内嵌页面</a>
                     <a href="{$assets}/layui/css/layui.css">静态资源</a>
                 </div>
             </div>
@@ -127,7 +262,7 @@
         </div>
         <div class="store-footer__bottom">
             <span>© 2026 youvision/think-store-example</span>
-            <span>Built with ThinkPHP 8 · Layui 2.13.9 <span class="store-footer__version">{$version}</span></span>
+            <span>Built with ThinkPHP 8 · Layui 2.13.9</span>
         </div>
     </div>
 </footer>
