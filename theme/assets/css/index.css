@@ -185,6 +185,36 @@ html {
     font-size: 15px;
 }
 
+.store-nav-toggle {
+    display: none;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 38px;
+    height: 38px;
+    margin-left: 8px;
+    padding: 0;
+    border: 1px solid rgba(22, 186, 170, 0.16);
+    border-radius: 12px;
+    background: rgba(22, 186, 170, 0.07);
+    color: var(--store-brand-deep);
+    font-size: 18px;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.store-nav-toggle:hover,
+.store-nav-toggle:focus-visible {
+    border-color: rgba(22, 186, 170, 0.32);
+    background: var(--store-brand-soft);
+    outline: none;
+}
+
+.store-nav-toggle .layui-icon {
+    font-size: 18px;
+}
+
 /* --------------------------------------------------------------------------
  * 主内容与深色 Hero
  * ------------------------------------------------------------------------ */
@@ -1839,11 +1869,13 @@ html {
         padding: 0 18px;
     }
 
-    .store-header__inner {
+    .store-page .store-header__inner {
         flex-wrap: wrap;
+        align-items: center;
+        align-content: flex-start;
         gap: 0;
-        padding: 12px 0 4px;
-        min-height: auto;
+        padding: 12px 0;
+        min-height: 64px;
     }
 
     .store-brand {
@@ -1867,22 +1899,37 @@ html {
         display: none;
     }
 
-    .store-nav {
-        width: 100%;
-        margin-top: 6px;
-        margin-left: 0;
-        overflow-x: auto;
-        flex-wrap: nowrap;
+    .store-nav-toggle {
+        display: inline-flex;
+    }
 
+    .store-nav {
+        display: none;
+        order: 5;
+        width: 100%;
+        margin: 12px 0 2px;
+        padding: 0;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        gap: 2px;
+        overflow: visible;
+    }
+
+    .store-header.is-nav-open .store-nav {
+        display: flex;
     }
 
     .store-nav .layui-nav-item {
+        width: 100%;
         flex: none;
         line-height: 44px;
     }
 
     .store-nav .layui-nav-item a {
-        padding: 0 12px;
+        display: flex;
+        height: 44px;
+        padding: 0 14px;
+        border-radius: 10px;
     }
 
     .store-main {
@@ -2049,6 +2096,35 @@ html {
 @media (max-width: 560px) {
     .store-page .layui-container {
         padding: 0 16px;
+    }
+
+    .store-page .store-header__inner {
+        padding: 10px 0;
+        min-height: 60px;
+    }
+
+    .store-brand {
+        font-size: 15px;
+    }
+
+    .store-brand::before {
+        width: 28px;
+        height: 28px;
+        border-radius: 8px;
+    }
+
+    .store-github-link,
+    .store-nav-toggle {
+        width: 36px;
+        height: 36px;
+    }
+
+    .store-nav-toggle {
+        margin-left: 6px;
+    }
+
+    .store-nav {
+        margin-top: 10px;
     }
 
     .store-hero {
