@@ -1,5 +1,27 @@
-{include file="layout/head" /}
-{include file="layout/header" /}
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{$title} - Think Store Example</title>
+<meta name="description" content="{$description}">
+<link rel="stylesheet" href="{$assets}/layui/css/layui.css">
+<link rel="stylesheet" href="{$assets}/css/index.css">
+</head>
+<body class="store-page">
+<header class="store-header">
+    <div class="layui-container store-header__inner">
+        <a class="store-brand" href="{$home}">Think Store Example</a>
+        <ul class="layui-nav store-nav" lay-filter="store-nav">
+            <li class="layui-nav-item"><a href="{$home}">首页</a></li>
+            <li class="layui-nav-item"><a href="{$base}/intro">项目介绍</a></li>
+            <li class="layui-nav-item"><a href="{$base}/poems">唐诗示例</a></li>
+            <li class="layui-nav-item layui-this"><a href="{$base}/detail">示例详情</a></li>
+        </ul>
+        <span class="store-version">{$version}</span>
+    </div>
+</header>
+<main class="store-main" data-base="{$base}" data-api="{$api}" data-assets="{$assets}">
     <div class="layui-container">
         <section class="store-hero">
             <p class="store-eyebrow">package · youvision/think-store-example</p>
@@ -101,4 +123,15 @@
 
         <script type="application/json" id="store-example-routes">{$routesJson|raw}</script>
     </div>
-{include file="layout/footer" /}
+</main>
+<footer class="store-footer">
+    <div class="layui-container store-footer__inner">
+        <span>youvision/think-store-example · {$version}</span>
+        <span>MIT License · ThinkPHP 8</span>
+    </div>
+</footer>
+<script src="{$assets}/layui/layui.js"></script>
+<script src="{$assets}/js/common.js"></script>
+<script src="{$assets}/js/detail.js"></script>
+</body>
+</html>

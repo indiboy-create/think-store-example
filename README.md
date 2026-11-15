@@ -49,7 +49,7 @@ php think vendor:publish
 ## 页面与静态资源
 
 - 模板默认位于包内 `theme/view`，由包内 `View` 渲染器通过 think-view 的 `Think` 驱动渲染；将 `view` 配置为 `view/think-store-example`（相对项目根目录，`view` 与 `app` 同级）后，模板改为读取该目录，便于在主项目中覆盖。
-- `theme/view/layout` 存放公共的 head、导航与页脚片段，四个页面通过 `{include}` 复用。
+- 四个页面文件都是完整 HTML，head、导航与页脚直接写在各自模板中，不再依赖 `layout` 目录或 `{include}`；在主项目中覆盖视图时按页面单独拷贝即可。
 - 静态资源由 `AssetController` 读取 `theme/assets` 后输出；资源响应带 `Cache-Control: public, max-age=86400`，字体、CSS、JS、图片等类型返回对应的 `Content-Type`。
 - 模板内的页面、接口与资源地址由 `StoreExample` 根据 `route.prefix`、`route.segment` 与 `assets` 推导，修改配置后无需改动模板。
 
@@ -151,10 +151,7 @@ think-store-example/
 │  └─ Poems.php                  # 诗库读取
 ├─ theme/
 │  ├─ view/
-│  │  ├─ layout/
-│  │  │  ├─ head.html
-│  │  │  ├─ header.html
-│  │  │  └─ footer.html
+
 │  │  ├─ index.html
 │  │  ├─ intro.html
 │  │  ├─ poems.html

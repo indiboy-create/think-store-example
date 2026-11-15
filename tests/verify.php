@@ -46,6 +46,7 @@ $check(
     'composer.json 应通过 extra.store.home 声明首页 /store/think-store-example/index'
 );
 $check(!is_dir($packageRoot . '/project'), 'project 静态目录应已移除，资源改为包内 assets 路由');
+$check(!is_dir($packageRoot . '/theme/view/layout'), 'layout 目录应已移除，公共片段应内联进各页面');
 
 $files = [
     'config/store_example.php',
@@ -57,9 +58,7 @@ $files = [
     'src/StoreExampleController.php',
     'src/PoemController.php',
     'src/Poems.php',
-    'theme/view/layout/head.html',
-    'theme/view/layout/header.html',
-    'theme/view/layout/footer.html',
+
     'theme/view/index.html',
     'theme/view/intro.html',
     'theme/view/poems.html',
@@ -136,15 +135,33 @@ $check(str_contains($assetSource, 'realpath'), 'assets 路由应使用 realpath 
 $check(str_contains($assetSource, "'..'"), 'assets 路由应拒绝目录穿越');
 $check(str_contains($assetSource, 'Cache-Control'), 'assets 路由应设置缓存响应头');
 
-$headerSource = (string) file_get_contents($packageRoot . '/theme/view/layout/header.html');
-$check(str_contains($headerSource, 'Think Store Example'), '导航应使用 Think Store Example 全称');
-checkTemplateLinks($headerSource, $check);
+$pageScripts = [
+    'index'  => [],
+    'intro'  => [],
+    'poems'  => ['poems.js'],
+    'detail' => ['detail.js'],
+];
 
-$footerSource = (string) file_get_contents($packageRoot . '/theme/view/layout/footer.html');
-$check(str_contains($footerSource, '{$assets}/layui/layui.js'), '页脚应加载包内 layui');
-$check(str_contains($footerSource, 'common.js'), '页脚应加载 common.js');
-$check(str_contains($footerSource, 'poems.js'), '页脚应在唐诗页加载 poems.js');
-$check(str_contains($footerSource, 'detail.js'), '页脚应在详情页加载 detail.js');
+foreach ($pageScripts as $page => $scripts) {
+    $pageSource = (string) file_get_contents($packageRoot . '/theme/view/' . $page . '.html');
+
+    $check(str_contains($pageSource, '<!DOCTYPE html>'), $page . '.html 应为完整 HTML 页面');
+    $check(str_contains($pageSource, '<header class="store-header">'), $page . '.html 应内联导航');
+    $check(str_contains($pageSource, '<footer class="store-footer">'), $page . '.html 应内联页脚');
+    $check(str_contains($pageSource, 'Think Store Example'), $page . '.html 导航应使用 Think Store Example 全称');
+    $check(!str_contains($pageSource, '{include'), $page . '.html 不应再使用 {include}');
+    $check(str_contains($pageSource, '{$assets}/layui/layui.js'), $page . '.html 应加载包内 layui');
+    $check(str_contains($pageSource, 'common.js'), $page . '.html 应加载 common.js');
+    checkTemplateLinks($pageSource, $check);
+
+    foreach (['poems.js', 'detail.js'] as $script) {
+        $expected = in_array($script, $scripts, true);
+        $check(
+            str_contains($pageSource, $script) === $expected,
+            $page . '.html ' . ($expected ? '应' : '不应') . '加载 ' . $script
+        );
+    }
+}
 
 $indexSource = (string) file_get_contents($packageRoot . '/theme/view/index.html');
 $check(str_contains($indexSource, 'Think Store Example'), '首页应包含 Think Store Example 全称');
