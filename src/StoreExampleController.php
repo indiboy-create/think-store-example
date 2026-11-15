@@ -45,6 +45,23 @@ class StoreExampleController
         );
     }
 
+    /**
+     * iframe 唐诗页面：内容区独立，供其他系统内嵌调用。
+     */
+    public function iframePoems(): string
+    {
+        return $this->view->render('iframe/poems', [
+            'title'       => '唐诗示例',
+            'description' => '供其他系统 iframe 内嵌的唐诗页面，使用 layui 数据表格展示随机抽诗接口返回的记录。',
+            'base'        => $this->example->base(),
+            'assets'      => $this->example->assets(),
+            'api'         => $this->example->api(),
+            'iframeUrl'   => $this->example->base() . '/iframe/poems',
+            'poemCount'   => $this->poemCount(),
+            'version'     => $this->example->version(),
+        ]);
+    }
+
     public function detail(): string
     {
         return $this->render(

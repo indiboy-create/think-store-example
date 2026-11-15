@@ -1,0 +1,111 @@
+/*
+ * iframe 唐诗示例样式
+ * 供其他系统内嵌调用，不依赖 index.css，仅在 layui 默认样式上叠加。
+ */
+
+html,
+body {
+    min-height: 100%;
+}
+
+body.iframe-poems {
+    margin: 0;
+    padding: 15px;
+    background: #f2f2f2;
+    color: #333;
+    font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+}
+
+.iframe-poems .layui-card {
+    border: 1px solid #e6e6e6;
+    border-radius: 2px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+.iframe-poems .layui-card > .layui-tab {
+    margin: 0;
+}
+
+.iframe-poems .layui-tab-title {
+    padding: 0 15px;
+}
+
+.iframe-poems .layui-tab-content {
+    padding: 15px;
+}
+
+.iframe-poems__toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.iframe-poems__toolbar .layui-btn {
+    margin: 0;
+}
+
+.iframe-poems__hint {
+    margin-left: auto;
+    color: #999;
+    font-size: 12px;
+}
+
+.iframe-poems__api {
+    padding: 1px 6px;
+    border-radius: 3px;
+    background: #f2f8f7;
+    color: #0e8f83;
+    font-family: "Cascadia Code", Consolas, Monaco, monospace;
+    font-size: 12.5px;
+    word-break: break-all;
+}
+
+.iframe-poems .layui-table {
+    margin: 0;
+}
+
+.iframe-poems .layui-table td,
+.iframe-poems .layui-table th {
+    font-size: 13px;
+}
+
+.iframe-poems__detail {
+    padding: 18px 20px;
+}
+
+.iframe-poems__detail-meta {
+    margin: 0 0 10px;
+    color: #999;
+    font-size: 12px;
+}
+
+.iframe-poems__detail-content {
+    color: #333;
+    font-size: 15px;
+    line-height: 2;
+    white-space: pre-line;
+}
+
+@media (max-width: 560px) {
+    body.iframe-poems {
+        padding: 10px;
+    }
+
+    .iframe-poems__hint {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .iframe-poems .layui-tab-title {
+        padding: 0 10px;
+    }
+
+    .iframe-poems .layui-tab-content {
+        padding: 10px;
+    }
+}

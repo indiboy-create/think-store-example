@@ -129,7 +129,7 @@ class StoreExample
     {
         return [
             ['label' => '包名', 'value' => 'youvision/think-store-example'],
-            ['label' => '版本', 'value' => 'v' . $this->version()],
+            ['label' => '版本', 'value' => $this->version()],
             ['label' => '类型', 'value' => 'library'],
             ['label' => 'PHP', 'value' => '>=8.0'],
             ['label' => 'ThinkPHP', 'value' => '^8.0'],

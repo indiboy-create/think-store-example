@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{$title} - Think Store Example</title>
+<meta name="description" content="{$description}">
+<link rel="stylesheet" href="{$assets}/layui/css/layui.css">
+<link rel="stylesheet" href="{$assets}/iframe/css/poems.css">
+</head>
+<body class="iframe-poems" data-api="{$api}">
+<div class="layui-card">
+    <div class="layui-tab layui-tab-brief" lay-filter="iframe-poem-tabs">
+        <ul class="layui-tab-title">
+            <li class="layui-this">抽取记录</li>
+            <li>接口说明</li>
+        </ul>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <div class="iframe-poems__toolbar">
+                    <button class="layui-btn layui-btn-normal layui-btn-sm" id="poem-refresh" type="button">
+                        <i class="layui-icon layui-icon-refresh"></i> 换一首
+                    </button>
+                    <button class="layui-btn layui-btn-primary layui-btn-sm" id="poem-clear" type="button">清空记录</button>
+                    <span class="iframe-poems__hint">诗库 {$poemCount} 首 · 点击行查看全诗</span>
+                </div>
+                <table id="poem-table" lay-filter="poem-table"></table>
+            </div>
+            <div class="layui-tab-item">
+                <table class="layui-table iframe-poems__api-table" lay-skin="line">
+                    <colgroup>
+                        <col width="120">
+                        <col>
+                    </colgroup>
+                    <tbody>
+                        <tr>
+                            <td>页面地址</td>
+                            <td><code class="iframe-poems__api">{$iframeUrl}</code></td>
+                        </tr>
+                        <tr>
+                            <td>接口地址</td>
+                            <td><code class="iframe-poems__api">{$api}</code></td>
+                        </tr>
+                        <tr>
+                            <td>请求方法</td>
+                            <td>GET</td>
+                        </tr>
+                        <tr>
+                            <td>返回格式</td>
+                            <td>application/json</td>
+                        </tr>
+                        <tr>
+                            <td>返回字段</td>
+                            <td>id、title、author、type、contents</td>
+                        </tr>
+                        <tr>
+                            <td>诗库规模</td>
+                            <td>{$poemCount} 首</td>
+                        </tr>
+                        <tr>
+                            <td>内嵌示例</td>
+                            <td><code class="iframe-poems__api">&lt;iframe src="{$iframeUrl}"&gt;&lt;/iframe&gt;</code></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="{$assets}/layui/layui.js"></script>
+<script src="{$assets}/iframe/js/poems.js"></script>
+</body>
+</html>

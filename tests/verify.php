@@ -63,7 +63,10 @@ $files = [
     'theme/view/intro.html',
     'theme/view/poems.html',
     'theme/view/detail.html',
+    'theme/view/iframe/poems.html',
     'theme/assets/css/index.css',
+    'theme/assets/iframe/css/poems.css',
+    'theme/assets/iframe/js/poems.js',
     'theme/assets/js/common.js',
     'theme/assets/js/poems.js',
     'theme/assets/js/detail.js',
@@ -102,6 +105,7 @@ foreach ([
     "\$base . 'index'",
     "\$base . 'intro'",
     "\$base . 'poems'",
+    "\$base . 'iframe/poems'",
     "\$base . 'detail'",
     "\$base . 'api/poems/random'",
     "\$base . 'assets/<path>'",
@@ -178,6 +182,16 @@ $poemsSource = (string) file_get_contents($packageRoot . '/theme/view/poems.html
 $check(str_contains($poemsSource, '{$api}'), '唐诗页应展示推导后的接口地址');
 $check(str_contains($poemsSource, 'poem-result'), '唐诗页应包含结果容器');
 
+$iframePoemsSource = (string) file_get_contents($packageRoot . '/theme/view/iframe/poems.html');
+$check(str_contains($iframePoemsSource, '<!DOCTYPE html>'), 'iframe 唐诗页应为完整 HTML 页面');
+$check(str_contains($iframePoemsSource, '{$assets}/iframe/css/poems.css'), 'iframe 唐诗页应加载独立样式');
+$check(str_contains($iframePoemsSource, '{$assets}/iframe/js/poems.js'), 'iframe 唐诗页应加载独立脚本');
+$check(str_contains($iframePoemsSource, 'poem-table'), 'iframe 唐诗页应使用 layui 数据表格');
+$check(str_contains($iframePoemsSource, '{$api}'), 'iframe 唐诗页应使用推导后的接口地址');
+$check(str_contains($iframePoemsSource, '{$iframeUrl}'), 'iframe 唐诗页应展示自身地址');
+$check(!str_contains($iframePoemsSource, '<header class="store-header">'), 'iframe 唐诗页不应包含站点导航');
+$check(!str_contains($iframePoemsSource, '<footer class="store-footer">'), 'iframe 唐诗页不应包含站点页脚');
+
 $example = new \Youvision\ThinkStoreExample\StoreExample(['route' => ['prefix' => 'store']], $packageRoot);
 
 $check($example->base() === '/store/think-store-example', '默认 base 应为 /store/think-store-example');
@@ -246,6 +260,8 @@ unlink($customFile);
 $assetBase = $packageRoot . '/theme/assets';
 
 $check(\Youvision\ThinkStoreExample\AssetController::resolve('css/index.css') === realpath($assetBase . '/css/index.css'), 'assets 路由应能解析 css/index.css');
+$check(\Youvision\ThinkStoreExample\AssetController::resolve('iframe/css/poems.css') !== null, 'assets 路由应能解析 iframe/css/poems.css');
+$check(\Youvision\ThinkStoreExample\AssetController::resolve('iframe/js/poems.js') !== null, 'assets 路由应能解析 iframe/js/poems.js');
 $check(\Youvision\ThinkStoreExample\AssetController::resolve('layui/layui.js') !== null, 'assets 路由应能解析 layui/layui.js');
 $check(\Youvision\ThinkStoreExample\AssetController::resolve('../config/store_example.php') === null, 'assets 路由应拒绝目录穿越');
 $check(\Youvision\ThinkStoreExample\AssetController::resolve('css/missing.css') === null, 'assets 路由应拒绝不存在的文件');
